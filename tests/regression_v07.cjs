@@ -11,10 +11,10 @@ const noop=()=>{};
 const cx={setTransform:noop,fillRect:noop,strokeRect:noop,beginPath:noop,moveTo:noop,lineTo:noop,stroke:noop,arc:noop,fill:noop,closePath:noop,drawImage:noop,putImageData:noop,
 createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),
 getImageData:()=>{const w=96,h=54,data=new Uint8ClampedArray(w*h*4);for(let y=15;y<35;y++)for(let x=20;x<58;x++){const i=(y*w+x)*4;data[i]=255;data[i+1]=255;data[i+2]=255;data[i+3]=255}return{data}}};
-const dom=new Map(),storage=new Map();
+const dom=new Map(),storage=new Map(),scrolls=[];
 function el(){return{value:'',checked:false,textContent:'',tagName:'BUTTON',style:{setProperty:noop},classList:{toggle:noop},addEventListener:noop,append:noop,replaceChildren:noop,click:noop,pause:noop,load:noop,removeAttribute:noop,getContext:()=>cx,getBoundingClientRect:()=>({width:600,height:360,left:0,top:0})}}
 const document={getElementById(id){if(!dom.has(id))dom.set(id,el());return dom.get(id)},querySelectorAll:()=>[],createElement:el};
-const env=vm.createContext({document,localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},window:{devicePixelRatio:1,addEventListener:noop,prompt:()=> 'CUSTOM TEST',confirm:()=>true,LaserMaskZones,LaserVectorEdit,LaserVectorPaths},navigator:{},performance:{now:()=>1000},requestAnimationFrame:noop,alert:msg=>{throw Error(msg)}});
+const env=vm.createContext({document,localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},window:{devicePixelRatio:1,addEventListener:noop,scrollTo:(x,y)=>scrolls.push([x,y]),prompt:()=> 'CUSTOM TEST',confirm:()=>true,LaserMaskZones,LaserVectorEdit,LaserVectorPaths},navigator:{},performance:{now:()=>1000},requestAnimationFrame:noop,alert:msg=>{throw Error(msg)}});
 vm.runInContext(js,env);
 const run=code=>vm.runInContext(code,env);
 assert.equal(run('workspaceView'),'live');
@@ -37,6 +37,10 @@ run("setWorkspaceView('show')");
 assert.equal(dom.get('sequencerPanel').hidden,false);
 assert.equal(dom.get('studioPanel').hidden,false);
 run("setWorkspaceView('live')");
+assert.equal(scrolls.length,5);
+assert(scrolls.every(([x,y])=>x===0&&y===0));
+run("setWorkspaceView('live')");
+assert.equal(scrolls.length,5); // Re-selecting the same tab must not jump.
 assert.equal(run('bank.length'),8);
 assert.equal(run('state.layers[0].effect'),'tunnel');
 run('triggerSlot(1)');

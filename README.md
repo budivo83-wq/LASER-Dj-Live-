@@ -19,7 +19,9 @@ parametry, identifikátory ovládacích prvků a formát uložených scén zůst
 - **NASTAVENÍ** – plánovač trajektorie a virtuální masky.
 
 Projekční náhled je dostupný ve všech pěti pracovních pohledech. Na užších
-monitorech se panely automaticky skládají pod sebe. Funkce fyzického laserového
+monitorech se panely automaticky skládají pod sebe bez překrývání.
+Při změně záložky se zobrazení vrátí na začátek nového pracovního pohledu.
+Funkce fyzického laserového
 výstupu nejsou přidány; stále jde výhradně o virtuální simulaci.
 
 ## Rychlé spuštění (Windows 10/11)
