@@ -8,7 +8,7 @@ const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'app/index.html'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 
-assert.equal(pkg.version, '1.2.2');
+assert.equal(pkg.version, '1.2.3');
 assert.match(html, /data-workspace-tab="live"/);
 assert.match(html, /data-workspace-tab="design"/);
 assert.match(html, /data-workspace-tab="show"/);

@@ -1,4 +1,4 @@
-# Laser DJ Live – Desktop Edition 1.2.2
+# Laser DJ Live – Desktop Edition 1.2.3
 
 Samostatná **offline aplikace pro Windows** pro navrhování virtuálních laserových
 animací a zkoušení převodu videa na vektorové kontury.
@@ -6,6 +6,15 @@ animací a zkoušení převodu videa na vektorové kontury.
 **Pozor: aplikace neřídí skutečný laser. USB a ILDA výstupy nejsou implementované.**
 Je to náhledový a návrhový software. Softwarem nakreslené masky a virtuální
 BLACKOUT nejsou bezpečnostní zařízení.
+
+## Verze 1.2.3: stabilnější virtuální náhled
+
+Hodnota **Target frame rate** v NASTAVENÍ nyní skutečně omezuje frekvenci
+překreslování virtuálního náhledu. Dříve se používala především pro výpočet
+bodového rozpočtu, zatímco prohlížeč obvykle překresloval podle frekvence
+monitoru. BPM/sekvencer a čtení video vstupu se dále aktualizují nezávisle na
+omezené frekvenci náhledu. Nastavení PPS nadále označuje plánovanou rychlost
+vzorkování, **nikoli skutečný fyzický výstup**.
 
 ## Verze 1.2.2: profesionálnější LIVE, EDITOR a SHOW
 

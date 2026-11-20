@@ -64,6 +64,15 @@ assert.equal(run('bank[3].name'),'CUSTOM TEST');
 assert.equal(run('bank[3].scene.layers[0].effect'),'spiral');
 assert.equal(run('bank.length'),8);
 run('paint(1016)');
+const renderedFrame=run('lastFrame');
+run('paint(1032)');
+assert.equal(run('lastFrame'),renderedFrame); // 30 FPS: do not rebuild after 16 ms.
+run('paint(1050)');
+assert.notEqual(run('lastFrame'),renderedFrame); // Rebuild at the requested cadence.
+const nextFrame=run('lastFrame');
+run('state.targetFps=60;paint(1067)');
+assert.notEqual(run('lastFrame'),nextFrame); // 60 FPS must refresh after 17 ms.
+run('state.targetFps=30');
 run('state.sequence.on=true;seqStartBeat=0;seqStepAbs=-1;beatClock=0;tickSequencer()');
 assert.equal(run('seqStepAbs'),0);
 assert.equal(run('activeSlot'),0);
