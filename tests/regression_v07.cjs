@@ -192,4 +192,10 @@ run("$('vectorRemovePath').onclick()");
 assert.equal(run('selected().vectorPaths.length'),1);
 run("$('undo').onclick()");
 assert.equal(run('selected().vectorPaths.length'),2);
+// A pathological 1000-vertex zigzag must never exceed the virtual frame cap.
+run("state.layers[0].vectorPaths=[];state.layers[0].custom=Array.from({length:1000},(_,i)=>[i%2?-1:1,i%3?-.8:.8]);state.layers[0].effect='custom';state.layers[0].enabled=true;state.layers[1].enabled=false;state.spacing=.012;state.dwell=6;state.zones=[];state.mask='none';state.blackout=false;transition=null");
+const heavyFrame=run('buildFrame(0)');
+assert.equal(heavyFrame.length,16000);
+assert.equal(heavyFrame.at(-1).blank,true);
+assert.equal(heavyFrame.at(-1).r,0);
 console.log(JSON.stringify({result:'PASS',bankSlots:run('bank.length'),step:run('seqStepAbs'),midiMappings:run('midiMappings.length'),vectorContours:vector.count,vectorVertices:vector.points,videoPointCount}));
