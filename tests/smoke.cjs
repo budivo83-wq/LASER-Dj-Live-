@@ -15,6 +15,9 @@ assert.match(html, /data-workspace-tab="show"/);
 assert.match(html, /data-workspace-tab="inputs"/);
 assert.match(html, /data-workspace-tab="settings"/);
 assert.match(html, /setWorkspaceView\('live'\)/);
+// Preview must scroll with the document, never float over editor/settings controls.
+assert.match(html, /\.previewPanel\{grid-column:2;grid-row:1;position:relative;top:auto;/);
+assert.doesNotMatch(html, /\.previewPanel\{[^}]*position:sticky/);
 assert.match(html, /Video → Vector/);
 assert.match(html, /CAPTURE WINDOW/);
 assert.match(html, /FIND SPOUT/);
