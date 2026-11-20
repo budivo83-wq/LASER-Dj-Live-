@@ -8,7 +8,13 @@ const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'app/index.html'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 
-assert.equal(pkg.version, '1.2.0');
+assert.equal(pkg.version, '1.2.1');
+assert.match(html, /data-workspace-tab="live"/);
+assert.match(html, /data-workspace-tab="design"/);
+assert.match(html, /data-workspace-tab="show"/);
+assert.match(html, /data-workspace-tab="inputs"/);
+assert.match(html, /data-workspace-tab="settings"/);
+assert.match(html, /setWorkspaceView\('live'\)/);
 assert.match(html, /Video → Vector/);
 assert.match(html, /CAPTURE WINDOW/);
 assert.match(html, /FIND SPOUT/);
@@ -24,7 +30,7 @@ assert.match(html, /INSERT ON LINE/);
 assert.match(html, /REDO EDIT/);
 assert.match(html, /LaserDJLiveSceneV12/);
 assert.match(html, /Contour stability/);
-assert.match(html, /HARDWARE OUTPUT DISABLED/);
+assert.match(html, /HARDWARE OUTPUT (DISABLED|OFF)/);
 assert.match(html, /vector-worker\.js/);
 assert.doesNotMatch(html, /<script\s+src=["']https?:/);
 

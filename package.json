@@ -1,6 +1,6 @@
 {
   "name": "laser-dj-live-desktop",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Laser DJ Live – offline laser-vector design studio (virtual output only)",
   "private": true,
   "main": "electron/main.cjs",
