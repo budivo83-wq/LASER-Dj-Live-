@@ -3,10 +3,16 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const os = require('node:os');
 const vm = require('node:vm');
 
 const handlers = {}, events = {};
 let currentWindow, dialogResult = 0;
+const testCacheRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'laser-dj-cache-test-'));
+const oldStorage = path.join(testCacheRoot, 'old', 'Local Storage');
+fs.mkdirSync(oldStorage, { recursive: true });
+fs.writeFileSync(path.join(oldStorage, 'bank-test'), 'saved-bank');
+let sessionDataPath;
 
 class FakeWindow {
   constructor(options) {
@@ -31,6 +37,8 @@ const fakeElectron = {
     on: (name, handler) => { events[name] = handler; },
     quit() {},
     isPackaged: false,
+    getPath: name => name === 'sessionData' ? path.join(testCacheRoot, 'old') : testCacheRoot,
+    setPath: (name, value) => { if (name === 'sessionData') sessionDataPath = value; },
   },
   BrowserWindow: FakeWindow,
   desktopCapturer: { getSources: async () => [
@@ -64,10 +72,13 @@ const context = vm.createContext({
   console,
   URL,
   Response,
+  process: { platform: 'win32', env: { LOCALAPPDATA: testCacheRoot }, pid: 3201 },
 });
 
 (async () => {
   vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'electron', 'main.cjs'), 'utf8'), context);
+  assert.equal(sessionDataPath, path.join(testCacheRoot, 'LaserDJLive', 'Chromium'));
+  assert.equal(fs.readFileSync(path.join(sessionDataPath, 'Local Storage', 'bank-test'), 'utf8'), 'saved-bank');
   await new Promise(resolve => setImmediate(resolve));
   assert.ok(currentWindow);
   assert.equal(currentWindow.options.webPreferences.sandbox, true);
@@ -107,4 +118,6 @@ const context = vm.createContext({
   assert.equal(captured, null);
   assert.equal(currentWindow.popupHandler().action, 'deny');
   console.log('PASS – Electron permissions, window capture picker, cancellation, secure renderer');
-})().catch(error => { console.error(error); process.exitCode = 1; });
+})().catch(error => { console.error(error); process.exitCode = 1; }).finally(() => {
+  fs.rmSync(testCacheRoot, { recursive: true, force: true });
+});

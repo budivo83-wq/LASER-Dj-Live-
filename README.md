@@ -32,6 +32,16 @@ výstupu nejsou přidány; stále jde výhradně o virtuální simulaci.
 
 Z terminálu lze stejně použít `npm install`, potom `npm start`.
 
+### Hlášení Windows „Unable to move/create cache“ (0x5)
+
+Na některých počítačích Windows nemá Electron právo vytvořit svou interní
+diskovou/GPU cache. Aplikace proto na Windows používá pro data prohlížeče
+zapisovatelnou složku `%LOCALAPPDATA%\LaserDJLive\Chromium` místo výchozí
+složky Electronu. Při prvním přechodu zkusí převést staré `Local Storage`,
+které obsahuje lokální banku scén a MIDI mapování. Scény si pro jistotu
+průběžně exportuj do JSON. Pokud se chyba opakuje i po aktualizaci, zkontroluj
+oprávnění k `%LOCALAPPDATA%` a zda jiný spuštěný proces aplikace nedrží cache.
+
 ## Novinka 1.2: více nezávislých vektorových cest
 
 1. Vyber **Custom Shape** nebo klikni **USE SHAPE** v levém editoru.

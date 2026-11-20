@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('node:path');
+const fs = require('node:fs');
 const { pathToFileURL } = require('node:url');
 const { app, BrowserWindow, desktopCapturer, dialog, ipcMain, Menu, net, protocol, session } = require('electron');
 const { SpoutBridge } = require('./spout-bridge.cjs');
@@ -13,6 +14,36 @@ protocol.registerSchemesAsPrivileged([{
 }]);
 const APP_ORIGIN = 'laserstudio://app';
 const APP_ROOT = path.join(__dirname, '..', 'app');
+
+// Chromium's default disk/GPU cache can be unwritable in managed Windows
+// profiles. Keep it in LOCALAPPDATA, away from the portable program folder.
+// Preserve localStorage (scene bank and MIDI mappings) on first relocation.
+function configureSessionStorage() {
+  if (process.platform !== 'win32') return;
+  try {
+    const previous = app.getPath('sessionData');
+    const local = process.env.LOCALAPPDATA;
+    if (!local || !path.isAbsolute(local)) return;
+    const target = path.join(local, 'LaserDJLive', 'Chromium');
+    fs.mkdirSync(target, { recursive: true });
+    fs.accessSync(target, fs.constants.W_OK);
+    if (path.resolve(previous).toLowerCase() !== path.resolve(target).toLowerCase()) {
+      const oldStorage = path.join(previous, 'Local Storage');
+      const newStorage = path.join(target, 'Local Storage');
+      if (fs.existsSync(oldStorage) && !fs.existsSync(newStorage)) {
+        // Do not switch directories if an existing bank cannot be migrated.
+        const staging = path.join(target, `.localstorage-import-${process.pid}`);
+        fs.cpSync(oldStorage, staging, { recursive: true, force: false, errorOnExist: true });
+        fs.renameSync(staging, newStorage);
+      }
+    }
+    app.setPath('sessionData', target);
+  } catch (error) {
+    console.warn('Could not relocate Chromium cache; keeping original session:', error.message);
+  }
+}
+
+configureSessionStorage(); // Must run before app.whenReady() / session initialization.
 
 let mainWindow;
 let spoutBridge;
