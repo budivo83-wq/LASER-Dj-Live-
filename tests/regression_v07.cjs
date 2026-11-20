@@ -193,9 +193,23 @@ assert.equal(run('selected().vectorPaths.length'),1);
 run("$('undo').onclick()");
 assert.equal(run('selected().vectorPaths.length'),2);
 // A pathological 1000-vertex zigzag must never exceed the virtual frame cap.
-run("state.layers[0].vectorPaths=[];state.layers[0].custom=Array.from({length:1000},(_,i)=>[i%2?-1:1,i%3?-.8:.8]);state.layers[0].effect='custom';state.layers[0].enabled=true;state.layers[1].enabled=false;state.spacing=.012;state.dwell=6;state.zones=[];state.mask='none';state.blackout=false;transition=null");
+run("state.layers[0].vectorPaths=[];state.layers[0].custom=Array.from({length:1000},(_,i)=>[i%2?-1:1,i%3?-.8:.8]);state.layers[0].effect='custom';state.layers[0].enabled=true;state.layers[1].enabled=false;state.spacing=.012;state.dwell=6;state.scanRate=30000;state.targetFps=30;state.zones=[];state.mask='none';state.blackout=false;transition=null");
 const heavyFrame=run('buildFrame(0)');
-assert.equal(heavyFrame.length,16000);
-assert.equal(heavyFrame.at(-1).blank,true);
+assert.equal(heavyFrame.length,1000);
+assert.equal(run('frameDiagnostics.reduced'),true);
+assert.equal(run('frameDiagnostics.originalPoints'),16000);
+assert.equal(heavyFrame.at(-1).blank,true); // The final path endpoint remains a blank point.
 assert.equal(heavyFrame.at(-1).r,0);
+assert(heavyFrame.some(p=>!p.blank)&&heavyFrame.some(p=>p.blank));
+run('lastPreviewRender=0;paint(2000)');
+assert.equal(run("$('budgetStatus').textContent"),'Frame reduced: 16000 → 1000 points (budget 1000)');
+// Essential path boundaries and blank/lit transitions remain represented after reduction.
+const transitionIndexes=heavyFrame.map((p,i)=>i&&p.blank!==heavyFrame[i-1].blank?i:0).filter(Boolean);
+assert(transitionIndexes.length>=2);
+// Mask intersections and blank travel stay conservative after budget reduction.
+run("state.zones=[{x1:-.25,y1:-1,x2:.25,y2:1}];state.zonesEnabled=true");
+const maskedReducedFrame=run('buildFrame(0)');
+assert.equal(maskedReducedFrame.length,1000);
+assert(maskedReducedFrame.filter(p=>p.x>-.25&&p.x<.25).every(p=>p.blank));
+assert(maskedReducedFrame.some((p,i)=>i&&p.blank!==maskedReducedFrame[i-1].blank));
 console.log(JSON.stringify({result:'PASS',bankSlots:run('bank.length'),step:run('seqStepAbs'),midiMappings:run('midiMappings.length'),vectorContours:vector.count,vectorVertices:vector.points,videoPointCount}));
