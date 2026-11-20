@@ -125,7 +125,7 @@ function installSpoutBridge() {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    title: 'Laser DJ Live 1.2.1 – Virtual Studio',
+    title: 'Laser DJ Live 1.2.2 – Virtual Studio',
     width: 1560,
     height: 980,
     minWidth: 1100,

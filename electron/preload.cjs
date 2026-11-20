@@ -6,7 +6,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('laserDesktop', Object.freeze({
   desktop: true,
-  version: '1.2.1',
+  version: '1.2.2',
   hardwareOutputEnabled: false,
   spout: Object.freeze({
     listSources: () => ipcRenderer.invoke('spout:list'),
