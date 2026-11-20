@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; worker-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"><title>Laser DJ Live · Desktop Edition 1.2</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,"Segoe UI",Arial,sans-serif;background:#081018;color:#e4f1f6;--panel:#121f29;--edge:#2d4350;--mint:#53e9c0;--muted:#91a8b4}*{box-sizing:border-box}body{margin:0}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--mint);outline-offset:2px}header{padding:14px 22px;border-bottom:1px solid var(--edge);background:#101b24;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.logo{font-weight:800;letter-spacing:2px;font-size:20px}.logo span{font-size:12px;letter-spacing:1px;color:var(--muted)}.tag{padding:7px 11px;border-radius:99px;border:1px solid #865358;background:#3d242b;color:#ffb1a5;font-size:11px;font-weight:700;letter-spacing:1px}main{display:grid;grid-template-columns:284px minmax(380px,1fr) 290px;gap:13px;padding:13px;min-height:calc(100vh - 67px)}.panel{background:var(--panel);border:1px solid var(--edge);border-radius:13px;padding:16px;min-width:0}.panel h2{font-size:12px;letter-spacing:1.5px;color:#83e4d2;text-transform:uppercase;margin:2px 0 17px}.field{margin:17px 0}.field label{display:flex;justify-content:space-between;font-size:12px;color:#bacdd5;margin-bottom:9px}.num{color:var(--mint);font-variant-numeric:tabular-nums}.full{width:100%}select,button{border:1px solid #355766;color:#e9f7fb;background:#1a303c;border-radius:8px;padding:9px 10px}select{width:100%}input[type=range]{width:100%;accent-color:var(--mint);cursor:pointer}input[type=color]{width:100%;height:38px;border:none;background:transparent;cursor:pointer}input[type=checkbox]{accent-color:var(--mint)}button:hover{border-color:var(--mint)}.primary{background:#176653;border-color:#329c83;font-weight:700}.muted{font-size:12px;color:var(--muted);line-height:1.5}.pair,.tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px}.tabs button.active{background:#206b60;border-color:var(--mint);color:#fff}.stack{display:flex;flex-direction:column;gap:13px}.canvasWrap{position:relative;background:#010506;border:1px solid #26645a;border-radius:10px;overflow:hidden;min-height:420px;flex:1}.canvasWrap canvas{display:block;width:100%;height:100%;position:absolute;inset:0}.watermark{position:absolute;top:12px;left:14px;color:#70dbbd;letter-spacing:1.7px;font:11px monospace;pointer-events:none}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{background:#182c35;border-radius:9px;padding:11px}.stat b{display:block;margin-top:6px;font-size:21px;font-variant-numeric:tabular-nums}.stat small{font-size:10px;color:#8ca5b1}.warn{padding:13px;border-left:3px solid #dfab58;background:#2b2926;color:#e2cba9;font-size:12px;line-height:1.5;border-radius:5px}.safe{padding:13px;border-left:3px solid #d36b70;background:#302329;color:#f4b9ba;font-size:12px;line-height:1.5;border-radius:5px}.hr{height:1px;background:var(--edge);margin:18px 0}.editor{height:180px;width:100%;background:#061014;border:1px solid #426470;border-radius:8px;display:block;cursor:crosshair}.tools{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar button{font-size:12px}.status{font-size:11px;color:#c3d2d7}.hide{display:none!important}@media(max-width:1200px){main{grid-template-columns:250px 1fr}.right{grid-column:1/-1}}@media(max-width:700px){main{display:flex;flex-direction:column;padding:8px}.canvasWrap{min-height:340px}.stats{grid-template-columns:repeat(2,1fr)}.panel{padding:12px}.logo{font-size:16px}}
+.studio{grid-column:1/-1}.studioGrid{display:grid;grid-template-columns:260px 1fr 290px;gap:20px}.timelineTrack{position:relative;border:1px solid #375660;border-radius:8px;height:70px;background:repeating-linear-gradient(90deg,#274049 0 1px,transparent 1px 6.25%),linear-gradient(180deg,#192d38,#0d2029);margin:15px 0 8px}.timelineTrack:before{content:"BEATS →";position:absolute;top:9px;left:10px;color:#8cb0bb;font-size:10px;letter-spacing:2px}.timelineTrack:after{content:"";position:absolute;top:0;bottom:0;left:var(--phase,0%);border-left:2px solid #75ffcd;pointer-events:none}.marker{position:absolute;bottom:8px;transform:translateX(-50%);width:15px;height:26px;border-radius:5px;border:2px solid #d8b579;background:#725b32;cursor:pointer;box-shadow:0 0 8px #ca914077}.marker:hover,.marker.active{background:#81efca;border-color:#dffff3;box-shadow:0 0 12px #59e7c099}.keyList{display:flex;gap:7px;flex-wrap:wrap;min-height:44px}.keyList button{font-size:11px;padding:7px}.switchLine{display:flex;align-items:center;gap:8px;font-size:12px;color:#bbced6;margin:8px 0}.switchLine input{accent-color:#53e9c0}.caption{font-size:11px;color:#8da8b4;line-height:1.5}.trackTitle{display:flex;justify-content:space-between;align-items:center;gap:8px}#timelineSeek{width:100%;accent-color:#6cecc7}.bank{grid-column:1/-1}.bankLayout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:18px}.bankGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.slot{min-height:100px;text-align:left;background:#142b37;border-color:#355764;padding:14px;position:relative;overflow:hidden}.slot .index{display:block;color:#75e6c7;font-size:11px;letter-spacing:1px}.slot strong{font-size:15px;display:block;margin-top:8px}.slot .detail{color:#8ca7b3;font-size:11px;display:block;margin-top:8px}.slot.playing{border-color:#5ff1c2;background:#164b46}.slot.playing:after{content:"LIVE";position:absolute;right:10px;top:10px;color:#a2ffdb;font-size:10px}.slot.store{border-color:#e5b361;background:#493621}.padRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pad{min-height:52px}.pad.black{background:#473039;border-color:#a35d68}.pad.flash{background:#644627;border-color:#9e713f}.bankInfo{font-size:11px;color:#a3c1c9;margin-top:10px;line-height:1.5}@media(max-width:1100px){.studioGrid{grid-template-columns:1fr 1fr}.studioRight{grid-column:1/-1}.bankLayout{grid-template-columns:1fr}}@media(max-width:700px){.studioGrid{display:block}.bankGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sequencer,.midi{grid-column:1/-1}.seqOuter{overflow-x:auto;padding-bottom:9px}.seqRow{display:grid;grid-template-columns:95px repeat(16,minmax(36px,1fr));gap:5px;min-width:745px;margin-bottom:6px;align-items:center}.seqRow .lane{font-size:11px;letter-spacing:.06em;color:#b0cbd3;font-weight:700}.seqCell{height:42px;border-radius:6px;border:1px solid #36505c;background:#1a2d37;font-size:11px;padding:0;color:#87a0ab}.seqCell.on{background:#1c6f62;border-color:#62dbbf;color:white;font-weight:800}.seqCell.flashOn{background:#706035;border-color:#efc963;color:white}.seqCell.blackOn{background:#632c3b;border-color:#e1889d;color:white}.seqCell.now{outline:2px solid #daffff;outline-offset:1px}.seqCell.head{height:25px;border:0;background:none}.seqControls{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:16px}.seqControls button,.seqControls select{width:100%}.midiLayout{display:grid;grid-template-columns:280px 1fr;gap:20px}.midiList{display:flex;gap:7px;flex-wrap:wrap}.midiMapping{display:inline-flex;border:1px solid #446777;background:#203641;padding:8px;border-radius:7px;color:#cde9e6;font-size:11px}.help{font-size:11px;color:#9db6be;line-height:1.5}.accent{color:#79f0c7}.pill{display:inline-block;padding:5px 9px;border-radius:9px;background:#183e38;color:#8ef2ca;font-size:11px}.videoInput{grid-column:1/-1}.videoLayout{display:grid;grid-template-columns:310px minmax(280px,1fr) 270px;gap:20px}.sourcePreview{width:100%;aspect-ratio:16/9;background:#040909;border:1px solid #2a635b;border-radius:8px;image-rendering:pixelated}.inputActions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.videoStat{display:flex;gap:8px;flex-wrap:wrap}.videoStat span{padding:7px 10px;background:#192d38;border-radius:8px;font-size:11px;color:#a9c7cc}.videoInput select{width:100%}@media(max-width:1050px){.videoLayout{grid-template-columns:1fr 1fr}.videoHelp{grid-column:1/-1}}@media(max-width:850px){.seqControls{grid-template-columns:repeat(2,minmax(0,1fr))}.midiLayout,.videoLayout{grid-template-columns:1fr}.videoHelp{grid-column:auto}}
+.maskPanel{grid-column:1/-1}.maskLayout{display:grid;grid-template-columns:minmax(350px,2fr) minmax(270px,1fr);gap:18px}.maskCanvas{width:100%;height:230px;border:1px solid #b25165;border-radius:9px;background:#071016;cursor:crosshair;touch-action:none;display:block}.maskHelp{font-size:12px;color:#b9cbd4;line-height:1.55}.maskPanel button{width:100%}@media(max-width:750px){.maskLayout{grid-template-columns:1fr}.maskCanvas{height:200px}}
+.editor{height:260px;touch-action:none}.vectorTools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:9px 0}.vectorTools button{font-size:11px;padding:8px 5px}.vectorTools button.active{background:#176653;border-color:#53e9c0}.vectorTemplates{margin-top:7px}.vectorTemplates button{font-size:11px}.vectorHint{color:#98b8c4;font-size:11px;line-height:1.5}
+.vectorPathList{display:flex;flex-direction:column;gap:5px;max-height:195px;overflow-y:auto;margin:9px 0}.vectorPathItem{display:flex;align-items:center;gap:8px;padding:8px;text-align:left;min-height:34px;font-size:11px}.vectorPathItem.active{border-color:#53e9c0;background:#204c48}.vectorPathItem .swatch{width:14px;height:14px;border-radius:4px;flex:0 0 14px}.vectorPathItem .detail{font-size:10px;color:#92acb8;margin-left:auto}.vectorPathName{width:100%;border:1px solid #355766;background:#1a303c;color:#e9f7fb;border-radius:7px;padding:8px}.vectorPathOptions{margin:10px 0 15px}
+</style></head><body>
+<header><div class="logo">◈ LASER DJ LIVE <span> / DESKTOP EDITION 1.2</span></div><div class="toolbar"><span class="pill" id="runtimeStatus">DESKTOP / STARTING</span><span class="tag">HARDWARE OUTPUT DISABLED</span><button id="saveScene">SAVE SCENE</button><button id="openScene">LOAD SCENE</button><input id="sceneFile" type="file" accept=".json,application/json" hidden><button id="run" class="primary">PAUSE</button></div></header>
+<main>
+<section class="panel"><h2>01 / Layer mixer</h2><div class="tabs"><button data-layer="0" class="active">LAYER 1</button><button data-layer="1">LAYER 2</button></div>
+<div class="field"><label>Vrstva zapnuta <input id="enabled" type="checkbox" checked></label></div>
+<div class="field"><label>Animation</label><select id="effect"><option value="tunnel">Psy Tunnel</option><option value="circles">Rotating Circles</option><option value="spiral">Hypno Spiral</option><option value="fan">Laser Fan</option><option value="grid">Geometry Grid</option><option value="custom">Custom Shape</option><option value="video">Video → Vector (Live)</option></select></div>
+<div class="field"><label>Color</label><input id="color" type="color" value="#3effc6"></div>
+<div class="field"><label>Speed <span class="num" id="speedV"></span></label><input id="speed" type="range" min="-3" max="3" step=".05" value="1"></div>
+<div class="field"><label>Scale <span class="num" id="scaleV"></span></label><input id="scale" type="range" min=".1" max="1" step=".01" value=".65"></div>
+<div class="field"><label>Rotation <span class="num" id="rotationV"></span></label><input id="rotation" type="range" min="-720" max="720" step="1" value="0"></div>
+<div class="field"><label>Brightness <span class="num" id="brightnessV"></span></label><input id="brightness" type="range" min="0" max="100" step="1" value="75"></div>
+<div class="field"><label>Position X <span class="num" id="xV"></span></label><input id="x" type="range" min="-1" max="1" step=".01" value="0"></div>
+<div class="field"><label>Position Y <span class="num" id="yV"></span></label><input id="y" type="range" min="-1" max="1" step=".01" value="0"></div>
+<div class="hr"></div><h2>02 / Custom vector editor</h2><p class="muted">Jedna animace může obsahovat až 16 samostatných cest. Každá cesta má svou barvu a zapnutí. Vykreslování může změnit automatická optimalizace pořadí cest.</p>
+<div class="trackTitle"><span class="status">VECTOR PATHS</span><span class="pill" id="vectorPathSummary">1 path</span></div>
+<div id="vectorPathList" class="vectorPathList" aria-label="Vector paths"></div>
+<div class="tools"><button id="vectorAddPath" class="primary">+ NEW PATH</button><button id="vectorRemovePath">DELETE PATH</button><button id="vectorMoveUp">↑ PATH UP</button><button id="vectorMoveDown">↓ PATH DOWN</button></div>
+<div class="vectorPathOptions"><label class="switchLine"><input type="checkbox" id="vectorPathEnabled" checked> Selected path visible</label><label class="status" for="vectorPathColor">Path color</label><input id="vectorPathColor" type="color" value="#53e9c0" aria-label="Selected path color"><label class="status" for="vectorPathName">Path name</label><input id="vectorPathName" class="vectorPathName" maxlength="40" value="Path 1" aria-label="Selected path name"></div>
+<div class="vectorTools"><button data-vector-tool="draw" class="active">DRAW POINT</button><button data-vector-tool="move">SELECT / MOVE</button><button data-vector-tool="insert">INSERT ON LINE</button><button data-vector-tool="delete">DELETE POINT</button></div>
+<canvas id="editor" class="editor" tabindex="0" aria-label="Vector geometry editor"></canvas>
+<label class="switchLine"><input id="vectorSnap" type="checkbox"> Snap to 1/8 grid</label>
+<div class="tools"><button id="undo">UNDO EDIT</button><button id="redo">REDO EDIT</button><button id="deleteVertex">DELETE SELECTED</button><button id="clear">CLEAR POINTS</button><button id="closePath">CLOSE / OPEN</button><button id="useCustom" class="primary">USE SHAPE</button></div>
+<div class="tools vectorTemplates"><button data-vector-preset="star">★ STAR</button><button data-vector-preset="hexagon">⬡ HEXAGON</button><button data-vector-preset="wave">∿ WAVE</button></div>
+<p class="vectorHint">Kliknutím na cestu ji vybereš pro editaci. Nová cesta nezačne kreslit další čáru od konce předchozí. MOVE: táhni bod. INSERT: klikni na úsečku. DELETE: klikni na bod. Undo / Redo se uchovává zvlášť pro obě vrstvy.</p><p class="muted" id="editorInfo">Body: 0</p>
+</section>
+<section class="panel stack"><h2>03 / Scanner path preview</h2><div class="canvasWrap"><canvas id="preview"></canvas><div class="watermark">DESKTOP VECTOR ENGINE 1.2 · NO ILDA OUTPUT</div></div><div class="stats"><div class="stat"><small>PREVIEW FPS</small><b id="fps">0</b></div><div class="stat"><small>ALL POINTS</small><b id="points">0</b></div><div class="stat"><small>REQUIRED K PPS</small><b id="kpps">0.0</b></div><div class="stat"><small>PATHS</small><b id="paths">0</b></div><div class="stat"><small>LIT POINTS</small><b id="lit">0</b></div><div class="stat"><small>BLANK POINTS</small><b id="blank">0</b></div><div class="stat"><small>FRAME DURATION</small><b id="duration">0 ms</b></div><div class="stat"><small>PATH TRAVEL</small><b id="travel">0</b></div></div><div id="budgetWarning" class="warn hide">⚠ Bodový rozpočet pro zadané kpps a FPS je překročen. Tento náhled není fyzicky ověřený na skenerech.</div></section>
+<section class="panel right"><h2>04 / Performance & mapping</h2><div class="field"><label>BPM <span class="num" id="bpmV">138</span></label><input id="bpm" type="range" min="60" max="200" value="138"></div><div class="pair"><button id="tap">TAP</button><button id="beatReset">BEAT RESET</button></div><div class="field"><label>Master intensity <span class="num" id="masterV">100%</span></label><input id="master" type="range" min="0" max="100" value="100"></div><div class="field"><label>Layer Crossfader <span class="num" id="crossfadeV">L1 50% / L2 50%</span></label><input id="crossfade" type="range" min="0" max="100" value="50"></div><div class="field"><label>Preview masking</label><select id="mask"><option value="none">No preview mask</option><option value="bottom">Bottom 35% blocked</option><option value="left">Left 25% blocked</option><option value="right">Right 25% blocked</option></select></div><div class="field"><label>Preview options</label><label><input id="showPoints" type="checkbox"> Show sampled points</label><label><input id="showGrid" type="checkbox" checked> Show grid</label><label><input id="showTravel" type="checkbox"> Show blank travel</label></div><div class="hr"></div><h2>05 / Path optimizer</h2><div class="field"><label><span>Nearest-path ordering</span><input id="optimize" type="checkbox" checked></label></div><div class="field"><label>Point spacing <span class="num" id="spacingV"></span></label><input id="spacing" type="range" min=".012" max=".080" step=".002" value=".03"></div><div class="field"><label>Corner dwell <span class="num" id="dwellV"></span></label><input id="dwell" type="range" min="0" max="6" step="1" value="2"></div><div class="field"><label>Scan rate <span class="num" id="scanRateV"></span></label><input id="scanRate" type="range" min="10000" max="40000" step="1000" value="30000"></div><div class="field"><label>Target frame rate <span class="num" id="targetFpsV"></span></label><input id="targetFps" type="range" min="15" max="60" step="1" value="30"></div><button id="exportFrame" class="full">EXPORT PLANNED POINTS (JSON)</button><div class="hr"></div><h2>06 / Hardware diagnostics</h2><p class="status">USB: <strong>NOT CONNECTED</strong></p><p class="status">Teensy firmware: <strong>NOT IMPLEMENTED</strong></p><p class="status">DAC / ILDA: <strong>NOT CONNECTED</strong></p><p class="status" id="budgetText">Point budget: 1000</p><div class="safe">⚠ Jde výhradně o virtuální editor. Masky nejsou bezpečnostní ochranou. Tento program nemá USB, DAC ani ILDA výstup a nedokáže řídit skutečný laser.</div></section>
+<section class="panel maskPanel"><div class="trackTitle"><h2>06B / Custom virtual blackout zones</h2><span class="tag">NOT LASER SAFETY</span></div>
+<div class="maskLayout"><div><canvas id="maskCanvas" class="maskCanvas" width="480" height="240"></canvas><p class="maskHelp">Tažením myši vyznač obdélník, který se v náhledu nevykreslí. Můžeš přidat až 16 zón. Souřadnice jsou relativní k projekční ploše a ukládají se do scény.</p></div>
+<div><label class="switchLine"><input type="checkbox" id="maskZonesEnabled" checked> Enable custom blackout zones</label><div class="pair"><button id="maskUndo">UNDO ZONE</button><button id="maskClear">CLEAR ZONES</button></div><p class="status" id="maskInfo">0 custom zones</p><div class="safe">Virtuální masky pomáhají navrhnout obsah, ale nejsou náhradou hardwarového shutteru, scanner-fail ochrany ani E-STOP.</div></div></div></section>
+<section class="panel studio">
+<div class="trackTitle"><h2>07 / Animation Studio — Keyframes</h2><span class="tag" id="studioLayerName">LAYER 1</span></div>
+<div class="studioGrid">
+<div><label class="switchLine"><input type="checkbox" id="timelineEnabled"> Animate selected layer</label><label class="switchLine"><input type="checkbox" id="timelinePlay" checked> Follow BPM playback</label>
+<div class="field"><label>Length of loop</label><select id="durationBeats"><option value="4">4 beats</option><option value="8" selected>8 beats</option><option value="16">16 beats</option><option value="32">32 beats</option><option value="64">64 beats</option></select></div>
+<div class="field"><label>Interpolation</label><select id="easing"><option value="smooth">Smooth</option><option value="linear">Linear</option><option value="hold">Hold</option></select></div>
+<p class="caption">Nastav parametry vybrané vrstvy vlevo, přesuň playhead a stiskni ADD / UPDATE KEYFRAME. Časová osa ovládá scale, rotation, brightness, position X/Y.</p></div>
+<div><label class="trackTitle">Timeline <span class="num" id="timelineValue">0.00 beats</span></label><div id="timelineTrack" class="timelineTrack"></div><input id="timelineSeek" type="range" min="0" max="1000" step="1" value="0"><div class="pair" style="margin-top:12px"><button id="saveKey" class="primary">ADD / UPDATE KEYFRAME</button><button id="removeKey">DELETE KEYFRAME</button></div><div class="keyList" id="keyList" style="margin-top:13px"></div></div>
+<div class="studioRight"><h2>Quick animation tools</h2><div class="tools"><button id="presetSpin">ROTATION LOOP</button><button id="presetPulse">BREATHING SCALE</button><button id="presetMove">LEFT–RIGHT</button><button id="resetKeys">RESET KEYS</button></div><p class="caption">Presety mění keyframes pouze v právě vybrané vrstvě. Hodnoty jdou dále do virtuálního scanner planneru z verze 0.3.</p><div class="warn" style="margin-top:14px">Exportované animace jsou zatím virtuální. Nejde o bezpečnostně ověřená data pro skutečný laser.</div></div>
+</div></section>
+<section class="panel bank"><h2>08 / Live scene bank</h2><div class="bankLayout"><div><div class="bankGrid" id="bankGrid"></div><p class="bankInfo">Klik na scénu = plynulý přechod. Klávesy 1–8 spouštějí jednotlivé sloty. STORE MODE uloží současnou konfiguraci do vybraného slotu.</p></div><div><div class="field"><label>Transition length</label><select id="transitionBeats"><option value="0">Cut (instant)</option><option value="1">1 beat</option><option value="2" selected>2 beats</option><option value="4">4 beats</option><option value="8">8 beats</option><option value="16">16 beats</option></select></div><div class="pair"><button id="storeMode">STORE MODE: OFF</button><button id="exportBank">EXPORT BANK</button></div><div class="pair" style="margin-top:8px"><button id="importBank">IMPORT BANK</button><button id="resetBank">RESET BANK</button></div><input id="bankFile" type="file" accept=".json,application/json" hidden><div class="hr"></div><div class="padRow"><button class="pad black" id="blackout">BLACKOUT: OFF</button><button class="pad flash" id="flash">FLASH (HOLD)</button></div><p class="caption">BLACKOUT a FLASH jsou pouze efekty virtuálního náhledu, nikoli bezpečnostní ovládání projektoru. Uložení banky závisí na podpoře místního úložiště prohlížeče; pro zálohu použij EXPORT BANK.</p><p class="status" id="bankStatus">Scene bank ready.</p></div></div></section>
+<section class="panel sequencer"><div class="trackTitle"><h2>09 / 16-Step Performance Sequencer</h2><span class="pill" id="seqPosition">STEP — / 16</span></div>
+<div class="seqControls"><button id="seqToggle" class="primary">SEQUENCER: OFF</button><select id="seqStepBeats"><option value=".5">½ beat / step</option><option value="1" selected>1 beat / step</option><option value="2">2 beats / step</option><option value="4">4 beats / step</option></select><button id="seqReset">RESTART AT STEP 1</button><button id="seqRandom">RANDOM PATTERN</button><button id="seqClear">CLEAR ALL STEPS</button></div>
+<div class="seqOuter" id="seqGrid"></div><p class="help">SCENE: klik přepíná 1–8 a prázdno, pravý klik krok vymaže. FLASH: krátký akcent na začátku kroku. BLACKOUT: virtuální vytmavení po dobu kroku. Sekvencer spouští scény z banky a používá společný BPM.</p></section>
+<section class="panel midi"><h2>10 / MIDI Learn — APC40 MK2 & other controllers</h2><div class="midiLayout"><div><button id="midiConnect" class="primary full">CONNECT MIDI INPUT</button><div class="field"><label>Target control</label><select id="midiTarget"><option value="crossfade">Crossfader L1/L2</option><option value="master">Master Intensity</option><option value="bpm">BPM</option><option value="nextScene">Next Scene</option><option value="prevScene">Previous Scene</option><option value="blackout">Blackout toggle</option><option value="flash">Flash momentary</option><option value="seqToggle">Sequencer ON/OFF</option></select></div><button id="midiLearn">LEARN: OFF</button><button id="midiClear" style="margin-top:8px">CLEAR MIDI MAPPINGS</button></div><div><p class="status" id="midiStatus">MIDI not connected. Chrome / Edge may request permission.</p><p class="status" id="midiLast">Last MIDI: —</p><div class="midiList" id="midiMappingList"></div><p class="help">Klikni CONNECT, povol MIDI přístup, vyber funkci, zapni LEARN a pohni ovladačem. MIDI Learn funguje jen pokud prohlížeč poskytuje Web MIDI API a přístup povolíš. SysEx nepoužíváme. MIDI ovládá pouze virtuální program, nikoli projektor.</p></div></div></section>
+<section class="panel videoInput"><div class="trackTitle"><h2>11 / Video → Vector Input</h2><span class="pill">SIMULATION ONLY</span></div><div class="videoLayout">
+<div><div class="inputActions"><button id="captureWindow" class="primary">CAPTURE WINDOW</button><button id="loadVideo">LOAD VIDEO</button></div><input type="file" id="videoFile" accept="video/*" hidden><video id="sourceVideo" muted loop playsinline hidden></video><div class="field"><label>Spout sender (Windows)</label><select id="spoutSource"><option value="">Active sender</option></select></div><div class="inputActions"><button id="spoutRefresh">FIND SPOUT</button><button id="spoutStart" class="primary">START SPOUT</button></div><div class="inputActions" style="margin-top:8px"><button id="spoutDemo">DEMO INPUT</button><button id="stopVideo">STOP INPUT</button></div><button id="useVideoLayer" class="full" style="margin-top:8px">USE ON L1</button><p class="status" id="spoutStatus">Native Spout receiver optional. Demo works without hardware.</p><p class="status" id="videoStatus">No video source. Select Video → Vector on a layer.</p><canvas id="inputPreview" class="sourcePreview" width="96" height="54"></canvas><div class="videoStat"><span id="sourceFps">0 input FPS</span><span id="contourCount">0 contours</span><span id="contourPoints">0 vector vertices</span><span id="processorStatus">CPU</span></div></div>
+<div><div class="field"><label>Brightness threshold <span class="num" id="thresholdV">130</span></label><input id="threshold" type="range" min="15" max="245" step="1" value="130"></div><div class="field"><label>Contour stability / hysteresis <span class="num" id="hysteresisV">9</span></label><input id="hysteresis" type="range" min="0" max="40" step="1" value="9"></div><div class="field"><label>Blur radius <span class="num" id="blurV">1</span></label><input id="blur" type="range" min="0" max="3" step="1" value="1"></div><div class="field"><label>Minimum contour <span class="num" id="minContourV">16 px</span></label><input id="minContour" type="range" min="4" max="100" step="2" value="16"></div><div class="field"><label>Contour simplification <span class="num" id="simplifyV">1.5 px</span></label><input id="simplify" type="range" min="0" max="4" step=".5" value="1.5"></div><div class="field"><label>Maximum contours <span class="num" id="maxContoursV">40</span></label><input id="maxContours" type="range" min="5" max="100" step="5" value="40"></div></div>
+<div class="videoHelp"><h2>Resolume → Spout → Laser DJ</h2><p class="help">V Resolume zapni Output → Spout. Po sestavení nativního receiveru klikni FIND SPOUT, vyber zdroj a START SPOUT. Bez receiveru stiskni DEMO INPUT a vyzkoušej zpracování obrysů.</p><p class="help">CAPTURE WINDOW i LOAD VIDEO stále fungují jako alternativní zdroje. Přímý Spout vyžaduje x64 SpoutLibrary.dll a LaserSpoutReceiver.exe postavený ze zdrojů v ZIPu. Výpočty kontur fungují i bez laserového hardware.</p><div class="warn">Toto je pouze virtuální náhled. Žádný laserový USB ani ILDA výstup není povolen. Softwarová maska není bezpečnostní ochrana.</div></div></div></section>
+</main>
+<script src="./mask-zones.js"></script>
+<script src="./vector-edit.js"></script>
+<script src="./vector-paths.js"></script>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const MaskZones=window.LaserMaskZones;
+const VectorEdit=window.LaserVectorEdit;
+const VectorPaths=window.LaserVectorPaths;
+const defaults=()=>[{enabled:true,effect:'tunnel',color:'#3effc6',speed:1,scale:.65,rotation:0,brightness:75,x:0,y:0,custom:[],closed:false,timelineEnabled:false,keyframes:[]},{enabled:false,effect:'circles',color:'#ff48be',speed:-.55,scale:.4,rotation:0,brightness:65,x:0,y:0,custom:[],closed:false,timelineEnabled:false,keyframes:[]}];
+const defaultSequence=()=>({on:false,stepBeats:1,scenes:[1,0,0,0,3,0,0,0,4,0,0,0,8,0,0,0],flash:[true,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],blackout:Array(16).fill(false)});
+let state={layers:defaults(),selected:0,run:true,master:100,mask:'none',zones:[],zonesEnabled:true,bpm:138,showPoints:false,showGrid:true,showTravel:false,optimize:true,spacing:.03,dwell:2,scanRate:30000,targetFps:30,timelinePlay:true,durationBeats:8,easing:'smooth',playhead:0,crossfade:.5,transitionBeats:2,blackout:false,flash:false,sequence:defaultSequence()},time=0,beatClock=0,last=performance.now(),fps=0,beatTicks=[],lastFrame=[],pathsCount=0,travelDistance=0;
+let seqStartBeat=0,seqStepAbs=-1,seqBlackoutActive=false,seqFlashUntil=-1;
+let midiAccess=null,midiMappings=[],midiLearning=false,lastMidiNote={};
+let transition=null,bank=[],activeSlot=0,storeArmed=false;
+const editor=$('editor'),ectx=editor.getContext('2d'),preview=$('preview'),ctx=preview.getContext('2d');
+const sourceVideo=$('sourceVideo'),inputPreview=$('inputPreview'),inputCtx=inputPreview.getContext('2d');
+const inputWork=document.createElement('canvas');inputWork.width=96;inputWork.height=54;
+const workCtx=inputWork.getContext('2d',{willReadFrequently:true});
+let inputPaths=[],videoStream=null,videoURL=null,videoMode='none',lastVideoFrame=-Infinity,inputFrameFps=0;
+let vectorWorker=null,vectorWorkerBusy=false,videoGeneration=0,previousBinaryMain=null;
+let spoutPending=null;
+$('runtimeStatus').textContent=window.laserDesktop?.desktop?'WINDOWS DESKTOP 1.2':'BROWSER PREVIEW 1.2';
+function selected(){return state.layers[state.selected]}
+function bindControls(){vectorDrag=null;const l=selected();ensureVectorPaths(l);for(const key of ['effect','color','speed','scale','rotation','brightness','x','y'])$(key).value=l[key];$('enabled').checked=l.enabled;for(const key of ['speed','scale','rotation','brightness','x','y'])$(key+'V').textContent=key==='brightness'?l[key]+'%':key==='rotation'?l[key]+'°':Number(l[key]).toFixed(2);document.querySelectorAll('[data-layer]').forEach(b=>b.classList.toggle('active',+b.dataset.layer===state.selected));$('timelineEnabled').checked=!!l.timelineEnabled;$('studioLayerName').textContent='LAYER '+(state.selected+1);renderVectorPathList();drawEditor();drawKeyframes()}
+document.querySelectorAll('[data-layer]').forEach(b=>b.addEventListener('click',()=>{state.selected=+b.dataset.layer;bindControls()}));
+for(const key of ['effect','color','speed','scale','rotation','brightness','x','y'])$(key).addEventListener('input',()=>{selected()[key]=['speed','scale','rotation','brightness','x','y'].includes(key)?Number($(key).value):$(key).value;bindControls()});
+$('enabled').onchange=e=>selected().enabled=e.target.checked;
+function fitCanvas(canvas,context){const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2),w=Math.max(1,rect.width),h=Math.max(1,rect.height);if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr)}context.setTransform(dpr,0,0,dpr,0,0);return[w,h]}
+const vectorHistory=[[],[]],vectorFuture=[[],[]],vectorSelection=[-1,-1],activeVectorPath=[0,0];
+let vectorTool='draw',vectorDrag=null;
+function ensureVectorPaths(layer=selected()){if(!Array.isArray(layer.vectorPaths))VectorPaths.upgradeLayer(layer);return layer.vectorPaths}
+function selectedVectorPath(){const paths=ensureVectorPaths(),i=state.selected;activeVectorPath[i]=Math.min(paths.length-1,Math.max(0,activeVectorPath[i]));return paths[activeVectorPath[i]]}
+function vectorSnapshot(index){return{vectorPaths:JSON.parse(JSON.stringify(ensureVectorPaths(state.layers[index]))),active:activeVectorPath[index]}}
+function vectorCheckpoint(index){const history=vectorHistory[index];history.push(vectorSnapshot(index));if(history.length>80)history.shift();vectorFuture[index]=[]}
+function restoreVector(index,snapshot){state.layers[index].vectorPaths=VectorPaths.validate(snapshot.vectorPaths);activeVectorPath[index]=snapshot.active;vectorSelection[index]=-1;vectorDrag=null;renderVectorPathList();drawEditor()}
+function undoVector(){const i=state.selected;if(!vectorHistory[i].length)return;vectorFuture[i].push(vectorSnapshot(i));restoreVector(i,vectorHistory[i].pop())}
+function redoVector(){const i=state.selected;if(!vectorFuture[i].length)return;vectorHistory[i].push(vectorSnapshot(i));restoreVector(i,vectorFuture[i].pop())}
+function resetVectorHistory(){for(let i=0;i<2;i++){vectorHistory[i]=[];vectorFuture[i]=[];vectorSelection[i]=-1;activeVectorPath[i]=0}vectorDrag=null}
+function setVectorTool(mode){if(!['draw','move','insert','delete'].includes(mode))return;vectorTool=mode;vectorDrag=null;document.querySelectorAll('[data-vector-tool]').forEach(b=>b.classList.toggle('active',b.dataset.vectorTool===mode));drawEditor()}
+document.querySelectorAll('[data-vector-tool]').forEach(b=>b.addEventListener('click',()=>setVectorTool(b.dataset.vectorTool)));
+function renderVectorPathList(){
+  const paths=ensureVectorPaths(),i=state.selected,root=$('vectorPathList');
+  activeVectorPath[i]=Math.min(paths.length-1,Math.max(0,activeVectorPath[i]));
+  root.replaceChildren();
+  paths.forEach((p,j)=>{
+    const b=document.createElement('button');b.className='vectorPathItem'+(j===activeVectorPath[i]?' active':'');
+    const swatch=document.createElement('span');swatch.className='swatch';swatch.style.backgroundColor=p.enabled?p.color:'#59636d';
+    const label=document.createElement('span');label.textContent=(j+1)+'. '+p.name;
+    const detail=document.createElement('span');detail.className='detail';detail.textContent=p.points.length+' pts'+(p.enabled?'':' · OFF');
+    b.append(swatch,label,detail);b.onclick=()=>{activeVectorPath[i]=j;vectorSelection[i]=-1;vectorDrag=null;renderVectorPathList();drawEditor()};root.append(b);
+  });
+  const p=selectedVectorPath();
+  $('vectorPathEnabled').checked=p.enabled;$('vectorPathColor').value=p.color;$('vectorPathName').value=p.name;
+  $('vectorPathSummary').textContent=paths.length+' / '+VectorPaths.MAX_PATHS+' paths · '+VectorPaths.countPoints(paths)+' / '+VectorPaths.MAX_POINTS+' points';
+}
+function changeVectorPath(callback){const p=selectedVectorPath();if(!callback(p,true))return;vectorCheckpoint(state.selected);callback(p,false);renderVectorPathList();drawEditor()}
+$('vectorPathEnabled').onchange=()=>changeVectorPath((p,check)=>check?p.enabled!==$('vectorPathEnabled').checked:(p.enabled=$('vectorPathEnabled').checked,true));
+$('vectorPathColor').onchange=()=>changeVectorPath((p,check)=>check?p.color!==$('vectorPathColor').value:(p.color=$('vectorPathColor').value,true));
+$('vectorPathName').onchange=()=>changeVectorPath((p,check)=>{const name=$('vectorPathName').value.trim().slice(0,40)||'Untitled';return check?p.name!==name:(p.name=name,true)});
+$('vectorAddPath').onclick=()=>{
+  const paths=ensureVectorPaths();if(paths.length>=VectorPaths.MAX_PATHS)return;
+  vectorCheckpoint(state.selected);
+  const palette=['#53e9c0','#ff5aa9','#ffd66e','#5dc5ff','#b38aff'];
+  paths.push(VectorPaths.makePath('Path '+(paths.length+1),palette[paths.length%palette.length]));
+  activeVectorPath[state.selected]=paths.length-1;vectorSelection[state.selected]=-1;renderVectorPathList();drawEditor();
+};
+$('vectorRemovePath').onclick=()=>{
+  const paths=ensureVectorPaths(),index=activeVectorPath[state.selected],current=selectedVectorPath();
+  if(current.points.length&&!window.confirm('Odstranit cestu '+current.name+'? Změnu lze vrátit přes UNDO EDIT.'))return;
+  vectorCheckpoint(state.selected);
+  if(paths.length===1)paths[0]=VectorPaths.makePath('Path 1',selected().color);
+  else paths.splice(index,1);
+  activeVectorPath[state.selected]=Math.min(index,paths.length-1);vectorSelection[state.selected]=-1;renderVectorPathList();drawEditor();
+};
+function reorderVectorPath(delta){
+  const paths=ensureVectorPaths(),index=activeVectorPath[state.selected],next=index+delta;
+  if(next<0||next>=paths.length)return;
+  vectorCheckpoint(state.selected);[paths[index],paths[next]]=[paths[next],paths[index]];
+  activeVectorPath[state.selected]=next;renderVectorPathList();drawEditor();
+}
+$('vectorMoveUp').onclick=()=>reorderVectorPath(-1);
+$('vectorMoveDown').onclick=()=>reorderVectorPath(1);
+function drawEditor(){
+  const[w,h]=fitCanvas(editor,ectx),paths=ensureVectorPaths(),l=selected(),active=selectedVectorPath(),pts=active.points;
+  ectx.fillStyle='#061014';ectx.fillRect(0,0,w,h);ectx.strokeStyle='#244a52';ectx.lineWidth=1;
+  for(let i=1;i<16;i++){ectx.beginPath();ectx.moveTo(w*i/16,0);ectx.lineTo(w*i/16,h);ectx.moveTo(0,h*i/16);ectx.lineTo(w,h*i/16);ectx.stroke()}
+  paths.forEach((p,j)=>{
+    ectx.strokeStyle=p.enabled?p.color:'#677781';ectx.lineWidth=j===activeVectorPath[state.selected]?2.5:1.2;
+    ectx.beginPath();p.points.forEach(([x,y],i)=>{const px=(x+1)*w/2,py=(y+1)*h/2;if(i===0)ectx.moveTo(px,py);else ectx.lineTo(px,py)});
+    if(p.closed&&p.points.length>2)ectx.closePath();ectx.stroke();
+  });
+  pts.forEach(([x,y],i)=>{ectx.fillStyle=i===vectorSelection[state.selected]?'#ffdf62':i===0?'#ffb45f':'#b4ffe8';ectx.beginPath();ectx.arc((x+1)*w/2,(y+1)*h/2,i===vectorSelection[state.selected]?6:4,0,Math.PI*2);ectx.fill()});
+  $('editorInfo').textContent='Layer '+(state.selected+1)+' · Path '+(activeVectorPath[state.selected]+1)+' / '+paths.length+' · '+pts.length+' points · '+(active.closed?'closed':'open')+' · '+vectorTool.toUpperCase()+(vectorSelection[state.selected]>=0?' · selected #'+(vectorSelection[state.selected]+1):'')+($('vectorSnap').checked?' · snap':'');
+}
+function vectorEventPoint(event,snap=$('vectorSnap').checked){const r=editor.getBoundingClientRect();return VectorEdit.point((event.clientX-r.left)/Math.max(1,r.width)*2-1,(event.clientY-r.top)/Math.max(1,r.height)*2-1,snap)}
+editor.onpointerdown=event=>{
+  if(event.button!==undefined&&event.button!==0)return;
+  const i=state.selected,l=selectedVectorPath(),p=vectorEventPoint(event),raw=vectorEventPoint(event,false),r=editor.getBoundingClientRect(),hit=VectorEdit.vertexHit(l.points,raw,r.width,r.height);
+  editor.focus?.();
+  if(vectorTool==='draw'){
+    if(VectorPaths.countPoints(ensureVectorPaths())>=VectorPaths.MAX_POINTS){$('editorInfo').textContent='Maximum 1000 points per layer';return}
+    vectorCheckpoint(i);l.points.push(p);l.closed=false;vectorSelection[i]=l.points.length-1;
+  }else if(vectorTool==='move'){
+    vectorSelection[i]=hit;
+    if(hit>=0){vectorDrag={layer:i,path:activeVectorPath[i],index:hit,changed:false};editor.setPointerCapture?.(event.pointerId)}
+  }else if(vectorTool==='insert'){
+    if(VectorPaths.countPoints(ensureVectorPaths())>=VectorPaths.MAX_POINTS){$('editorInfo').textContent='Maximum 1000 points per layer';return}
+    const edge=VectorEdit.segmentHit(l.points,raw,r.width,r.height,l.closed);
+    if(edge){vectorCheckpoint(i);l.points.splice(edge.after,0,VectorEdit.point(...edge.point,$('vectorSnap').checked));vectorSelection[i]=edge.after}
+  }else if(vectorTool==='delete'&&hit>=0){
+    vectorCheckpoint(i);l.points.splice(hit,1);if(l.points.length<3)l.closed=false;vectorSelection[i]=-1;
+  }
+  renderVectorPathList();drawEditor();
+};
+editor.onpointermove=event=>{
+  if(!vectorDrag)return;
+  const {layer,path,index}=vectorDrag,l=ensureVectorPaths(state.layers[layer])[path];
+  if(layer!==state.selected||path!==activeVectorPath[layer]||!l?.points[index]){vectorDrag=null;return}
+  const p=vectorEventPoint(event),old=l.points[index];
+  if(Math.abs(p[0]-old[0])+Math.abs(p[1]-old[1])<.00001)return;
+  if(!vectorDrag.changed){vectorCheckpoint(layer);vectorDrag.changed=true}
+  l.points[index]=p;drawEditor();
+};
+editor.onpointerup=()=>{vectorDrag=null};
+editor.onpointercancel=()=>{vectorDrag=null;drawEditor()};
+$('undo').onclick=undoVector;$('redo').onclick=redoVector;
+$('deleteVertex').onclick=()=>{const i=state.selected,hit=vectorSelection[i],l=selectedVectorPath();if(hit<0||hit>=l.points.length)return;vectorCheckpoint(i);l.points.splice(hit,1);if(l.points.length<3)l.closed=false;vectorSelection[i]=-1;renderVectorPathList();drawEditor()};
+$('clear').onclick=()=>{const l=selectedVectorPath();if(!l.points.length&&!l.closed)return;vectorCheckpoint(state.selected);l.points=[];l.closed=false;vectorSelection[state.selected]=-1;renderVectorPathList();drawEditor()};
+$('closePath').onclick=()=>{const l=selectedVectorPath();if(l.points.length<3)return;vectorCheckpoint(state.selected);l.closed=!l.closed;drawEditor()};
+$('useCustom').onclick=()=>{selected().effect='custom';bindControls()};
+$('vectorSnap').onchange=drawEditor;
+document.querySelectorAll('[data-vector-preset]').forEach(button=>button.addEventListener('click',()=>{
+  const shape=VectorEdit.preset(button.dataset.vectorPreset);if(!shape)return;
+  const target=selectedVectorPath();
+  if(VectorPaths.countPoints(ensureVectorPaths())-target.points.length+shape.points.length>VectorPaths.MAX_POINTS)return;
+  if(target.points.length&&!window.confirm('Nahradit dosavadní body této cesty šablonou? Změnu můžeš vrátit přes UNDO EDIT.'))return;
+  vectorCheckpoint(state.selected);target.points=shape.points;target.closed=shape.closed;vectorSelection[state.selected]=-1;
+  selected().effect='custom';bindControls();
+}));
+editor.onkeydown=event=>{
+  const k=event.key.toLowerCase();
+  if((event.ctrlKey||event.metaKey)&&k==='z'){event.preventDefault();if(event.shiftKey)redoVector();else undoVector()}
+  else if((event.ctrlKey||event.metaKey)&&k==='y'){event.preventDefault();redoVector()}
+  else if(k==='delete'||k==='backspace'){event.preventDefault();$('deleteVertex').onclick()}
+  else if(k==='escape'){vectorSelection[state.selected]=-1;drawEditor()}
+};
+function generate(l,t){const out=[],path=(pts,closed=false,color=l.color)=>{if(pts.length>1)out.push({points:closed?[...pts,pts[0]]:pts,color,intensity:l.brightness/100})};let a=t*l.speed;
+if(l.effect==='custom'){
+  const independent=l.vectorPaths?.some(p=>p.points?.length>1);
+  if(independent){for(const p of l.vectorPaths)if(p.enabled)path(p.points,p.closed,p.color)}
+  else if(Array.isArray(l.vectorPaths)&&l.vectorPaths.length&&l.custom?.length<2){/* All custom paths empty or disabled. */}
+  else if(l.custom?.length>1)path(l.custom,l.closed);
+}
+else if(l.effect==='video'){for(const contour of inputPaths)path(contour)}
+else if(l.effect==='circles'){for(let j=1;j<=3;j++)path(Array.from({length:73},(_,i)=>[j*.27*Math.cos(i*Math.PI/36),j*.27*Math.sin(i*Math.PI/36)]))}
+else if(l.effect==='spiral')path(Array.from({length:210},(_,i)=>{let r=i/209*.93,q=i/209*12*Math.PI+a;return[r*Math.cos(q),r*Math.sin(q)]}));
+else if(l.effect==='fan'){for(let j=0;j<11;j++){let angle=-1.1+j*2.2/10+Math.sin(a)*.15;path([[0,-.76],[Math.sin(angle)*.85,Math.cos(angle)*.72]])}}
+else if(l.effect==='grid'){for(let j=-3;j<=3;j++){path([[-.8,j*.25],[.8,j*.25]]);path([[j*.25,-.8],[j*.25,.8]])}}
+else if(l.effect==='tunnel'){for(let j=0;j<7;j++){let r=.09+((j/7+a*.1%1+1)%1)*.86;path([[-r,-r],[r,-r],[r,r],[-r,r]],true)}}
+const angle=l.rotation*Math.PI/180+a*.10,c=Math.cos(angle),s=Math.sin(angle);
+return out.map(p=>({...p,points:p.points.map(([x,y])=>[(x*c-y*s)*l.scale+(l.x||0),(x*s+y*c)*l.scale+(l.y||0)])}))}
+function isMasked(x,y){return state.mask==='bottom'&&y>.3||state.mask==='left'&&x<-.5||state.mask==='right'&&x>.5||(state.zonesEnabled&&state.zones.some(z=>MaskZones.contains(z,x,y)))}
+const maskCanvas=$('maskCanvas'),maskCtx=maskCanvas.getContext('2d');
+let maskDragging=null;
+function maskPointerPosition(event){
+const rect=maskCanvas.getBoundingClientRect();
+return {x:Math.max(-1,Math.min(1,(event.clientX-rect.left)/Math.max(1,rect.width)*2-1)),
+y:Math.max(-1,Math.min(1,(event.clientY-rect.top)/Math.max(1,rect.height)*2-1))};
+}
+function drawMaskEditor(){
+const[w,h]=fitCanvas(maskCanvas,maskCtx);
+maskCtx.fillStyle='#071016';maskCtx.fillRect(0,0,w,h);
+maskCtx.strokeStyle='#25414d';maskCtx.lineWidth=1;
+for(let i=1;i<8;i++){
+maskCtx.beginPath();maskCtx.moveTo(w*i/8,0);maskCtx.lineTo(w*i/8,h);
+maskCtx.moveTo(0,h*i/8);maskCtx.lineTo(w,h*i/8);maskCtx.stroke();
+}
+function drawZone(z,pending=false){
+maskCtx.fillStyle=pending?'rgba(255,215,120,.27)':state.zonesEnabled?'rgba(240,80,101,.34)':'rgba(160,90,100,.17)';
+maskCtx.strokeStyle=pending?'#ffd080':'#fa7388';
+maskCtx.lineWidth=2;
+const x=(z.x1+1)*w/2,y=(z.y1+1)*h/2,zw=(z.x2-z.x1)*w/2,zh=(z.y2-z.y1)*h/2;
+maskCtx.fillRect(x,y,zw,zh);maskCtx.strokeRect(x,y,zw,zh);
+}
+for(const z of state.zones)drawZone(z);
+if(maskDragging){const candidate=MaskZones.normalizedRect(maskDragging.from,maskDragging.to);if(candidate)drawZone(candidate,true)}
+$('maskInfo').textContent=state.zones.length+' / 16 zones'+(state.zonesEnabled?' active (virtual)':' disabled');
+}
+maskCanvas.onpointerdown=event=>{
+if(state.zones.length>=16){$('maskInfo').textContent='Maximum 16 zones';return}
+maskDragging={from:maskPointerPosition(event),to:maskPointerPosition(event)};
+maskCanvas.setPointerCapture?.(event.pointerId);drawMaskEditor();
+};
+maskCanvas.onpointermove=event=>{if(!maskDragging)return;maskDragging.to=maskPointerPosition(event);drawMaskEditor()};
+maskCanvas.onpointerup=event=>{
+if(!maskDragging)return;
+maskDragging.to=maskPointerPosition(event);
+const zone=MaskZones.normalizedRect(maskDragging.from,maskDragging.to);
+if(zone&&state.zones.length<16)state.zones.push(zone);
+maskDragging=null;drawMaskEditor();
+};
+maskCanvas.onpointercancel=()=>{maskDragging=null;drawMaskEditor()};
+$('maskUndo').onclick=()=>{state.zones.pop();drawMaskEditor()};
+$('maskClear').onclick=()=>{state.zones=[];drawMaskEditor()};
+$('maskZonesEnabled').onchange=()=>{state.zonesEnabled=$('maskZonesEnabled').checked;drawMaskEditor()};
+function rgb(hex){return[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16))}
+const keyProps=['scale','rotation','brightness','x','y'];
+function timelinePhase(t){
+return state.timelinePlay?(beatClock/state.durationBeats%1):state.playhead;
+}
+function snapshot(l,p){const out={p};for(const k of keyProps)out[k]=Number(l[k]||0);return out}
+function animatedLayer(l,phase){
+const keys=l.keyframes||[];
+if(!l.timelineEnabled||keys.length===0)return l;
+const frames=[...keys].sort((a,b)=>a.p-b.p);
+if(phase<=frames[0].p)return {...l,...frames[0]};
+if(phase>=frames[frames.length-1].p)return {...l,...frames[frames.length-1]};
+for(let i=1;i<frames.length;i++){
+const a=frames[i-1],b=frames[i];
+if(phase<=b.p){
+let f=(phase-a.p)/Math.max(.000001,b.p-a.p);
+if(state.easing==='hold')f=0;
+else if(state.easing==='smooth')f=f*f*(3-2*f);
+const result={...l};
+for(const k of keyProps)result[k]=a[k]+(b[k]-a[k])*f;
+return result;
+}}
+return l;
+}
+function drawKeyframes(){
+const track=$('timelineTrack'),list=$('keyList'),keys=[...(selected().keyframes||[])].sort((a,b)=>a.p-b.p);
+track.replaceChildren();list.replaceChildren();
+for(const k of keys){
+const b=document.createElement('button');
+b.className='marker'+(Math.abs(k.p-timelinePhase(time))<.01?' active':'');
+b.style.left=Math.max(1.5,Math.min(98.5,k.p*100))+'%';
+b.title='Beat '+(k.p*state.durationBeats).toFixed(2);
+b.onclick=()=>selectKeyframe(k);
+track.append(b);
+const item=document.createElement('button');
+item.textContent=(k.p*state.durationBeats).toFixed(2)+' beat';
+item.onclick=()=>selectKeyframe(k);
+list.append(item);
+}
+if(!keys.length){const p=document.createElement('span');p.className='caption';p.textContent='No keyframes yet – use a preset or add your first key.';list.append(p)}
+}
+function selectKeyframe(k){
+state.timelinePlay=false;state.playhead=k.p;$('timelinePlay').checked=false;$('timelineSeek').value=Math.round(k.p*1000);
+for(const prop of keyProps)selected()[prop]=k[prop];bindControls();
+}
+function setKeys(keys){selected().keyframes=keys.sort((a,b)=>a.p-b.p);selected().timelineEnabled=true;bindControls()}
+function optimizePaths(paths){
+if(!state.optimize)return paths;
+const pool=paths.slice(),ordered=[];let cursor=[0,0];
+while(pool.length){
+let best=0,reverse=false,bestSq=Infinity;
+for(let i=0;i<pool.length;i++){
+const pts=pool[i].points,ends=[pts[0],pts[pts.length-1]];
+for(let e=0;e<2;e++){
+const d=(ends[e][0]-cursor[0])**2+(ends[e][1]-cursor[1])**2;
+if(d<bestSq){bestSq=d;best=i;reverse=e===1}
+}}
+const p=pool.splice(best,1)[0],pts=reverse?[...p.points].reverse():p.points;
+ordered.push({...p,points:pts});cursor=pts[pts.length-1];
+}
+return ordered;
+}
+function isCorner(pts,i){
+if(i<=0||i>=pts.length-1)return false;
+const a=pts[i-1],b=pts[i],c=pts[i+1],dx1=b[0]-a[0],dy1=b[1]-a[1],dx2=c[0]-b[0],dy2=c[1]-b[1];
+const len=Math.hypot(dx1,dy1)*Math.hypot(dx2,dy2);
+return len>1e-6&&(dx1*dx2+dy1*dy2)/len<.7;
+}
+function buildFrame(t){
+let all=[];const phase=timelinePhase(t);
+function appendScene(scene,mix){
+const layers=scene.layers,hasBoth=layers[0].enabled&&layers[1].enabled;
+for(let i=0;i<layers.length;i++){
+const l=layers[i];if(!l.enabled)continue;
+const x=scene.crossfade??.5,layerGain=hasBoth?(i===0?1-x:x):1;
+if(layerGain<=0||mix<=0)continue;
+const p=generate(animatedLayer(l,phase),t);
+for(const path of p)all.push({...path,intensity:path.intensity*layerGain*mix});
+}}
+if(transition){
+const duration=transition.durationBeats*60/Math.max(1,state.bpm);
+const elapsed=t-transition.startTime;
+if(duration<=0||elapsed>=duration){transition=null;appendScene(state,1)}
+else{const mix=Math.max(0,Math.min(1,elapsed/duration));appendScene(transition.from,1-mix);appendScene(state,mix)}
+}else appendScene(state,1);
+pathsCount=all.length;all=optimizePaths(all);
+const frame=[],maxPoints=16000,step=state.spacing,travelStep=.075;
+const previewBlackout=state.blackout||(state.sequence.on&&seqBlackoutActive);
+const previewFlash=state.flash||(state.sequence.on&&beatClock<seqFlashUntil);
+travelDistance=0;let cursor=[0,0];
+let lastLitCoordinate=null;
+function add(x,y,cl,blank,segmentFrom=null){
+const crossing=!blank&&state.zonesEnabled&&state.zones.some(z=>
+(lastLitCoordinate&&MaskZones.crosses(z,lastLitCoordinate[0],lastLitCoordinate[1],x,y))||
+(segmentFrom&&MaskZones.crosses(z,segmentFrom[0],segmentFrom[1],x,y)));
+const blocked=isMasked(x,y)||crossing,off=blank||blocked||previewBlackout;
+frame.push({x,y,r:off?0:cl[0],g:off?0:cl[1],b:off?0:cl[2],blank:off});
+lastLitCoordinate=off?null:[x,y];
+}
+for(const p of all){
+const pts=p.points;if(pts.length<2)continue;
+const factor=previewBlackout?0:(previewFlash?1.5:1);
+const color=rgb(p.color).map(v=>Math.max(0,Math.min(255,Math.round(v*p.intensity*state.master/100*factor))));
+const start=pts[0],dist=Math.hypot(start[0]-cursor[0],start[1]-cursor[1]);
+travelDistance+=dist;
+const travelCount=Math.max(1,Math.ceil(dist/travelStep));
+for(let j=1;j<=travelCount;j++){const f=j/travelCount;add(cursor[0]+(start[0]-cursor[0])*f,cursor[1]+(start[1]-cursor[1])*f,color,true)}
+for(let j=0;j<2;j++)add(start[0],start[1],color,true);
+for(let j=0;j<state.dwell;j++)add(start[0],start[1],color,false);
+for(let i=1;i<pts.length;i++){
+const from=pts[i-1],to=pts[i],dist=Math.hypot(to[0]-from[0],to[1]-from[1]),count=Math.max(1,Math.ceil(dist/step));
+for(let j=1;j<=count;j++){const f=j/count,prior=(j-1)/count;add(from[0]+(to[0]-from[0])*f,from[1]+(to[1]-from[1])*f,color,false,[from[0]+(to[0]-from[0])*prior,from[1]+(to[1]-from[1])*prior])}
+if(isCorner(pts,i))for(let d=0;d<state.dwell;d++)add(to[0],to[1],color,false);
+if(frame.length>=maxPoints)return frame;
+}
+cursor=pts[pts.length-1];
+for(let j=0;j<2;j++)add(cursor[0],cursor[1],color,true);
+}
+return frame;
+}
+function blurGray(values,w,h,radius){
+let src=values;
+for(let pass=0;pass<radius;pass++){
+const dst=new Float32Array(w*h);
+for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+let total=0,n=0;
+for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+const xx=x+dx,yy=y+dy;if(xx<0||yy<0||xx>=w||yy>=h)continue;
+total+=src[yy*w+xx];n++;
+}
+dst[y*w+x]=total/n;
+}
+src=dst;
+}
+return src;
+}
+function simplifyLine(points,epsilon){
+if(points.length<=2||epsilon<=0)return points.slice();
+const a=points[0],b=points[points.length-1],dx=b[0]-a[0],dy=b[1]-a[1],d=dx*dx+dy*dy;
+let best=-1,index=-1;
+for(let i=1;i<points.length-1;i++){
+const p=points[i],f=d>1e-8?Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/d)):0;
+const xx=a[0]+dx*f,yy=a[1]+dy*f,dist=(p[0]-xx)**2+(p[1]-yy)**2;
+if(dist>best){best=dist;index=i}
+}
+if(best<=epsilon*epsilon)return[a,b];
+return[...simplifyLine(points.slice(0,index+1),epsilon).slice(0,-1),...simplifyLine(points.slice(index),epsilon)];
+}
+function simplifyContour(points,epsilon){
+const first=points[0],last=points[points.length-1],closed=first[0]===last[0]&&first[1]===last[1];
+if(!closed)return simplifyLine(points,epsilon);
+const ring=points.slice(0,-1);
+if(ring.length<4)return points;
+let far=1,max=-1;
+for(let i=1;i<ring.length;i++){const d=(ring[i][0]-ring[0][0])**2+(ring[i][1]-ring[0][1])**2;if(d>max){max=d;far=i}}
+const a=simplifyLine(ring.slice(0,far+1),epsilon);
+const b=simplifyLine([...ring.slice(far),ring[0]],epsilon);
+return[...a.slice(0,-1),...b];
+}
+function traceContours(binary,w,h,minPerimeter,maxPaths,epsilon){
+const segments=[],at=new Map();
+function key(p){return p[0]+','+p[1]}
+function edge(a,b){
+const id=segments.length;segments.push([a,b]);
+for(const p of[a,b]){const k=key(p);if(!at.has(k))at.set(k,[]);at.get(k).push(id)}
+}
+for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+const idx=y*w+x;if(!binary[idx])continue;
+if(x===0||!binary[idx-1])edge([x,y],[x,y+1]);
+if(x===w-1||!binary[idx+1])edge([x+1,y],[x+1,y+1]);
+if(y===0||!binary[idx-w])edge([x,y],[x+1,y]);
+if(y===h-1||!binary[idx+w])edge([x,y+1],[x+1,y+1]);
+}
+const used=new Uint8Array(segments.length),candidates=[];
+for(let id=0;id<segments.length;id++){
+if(used[id])continue;used[id]=1;
+const points=[segments[id][0],segments[id][1]],firstKey=key(points[0]);
+let current=points[1],guard=0;
+while(guard++<segments.length){
+const next=(at.get(key(current))||[]).find(i=>!used[i]);
+if(next===undefined)break;
+used[next]=1;
+const e=segments[next],other=key(e[0])===key(current)?e[1]:e[0];
+points.push(other);current=other;
+if(key(current)===firstKey)break;
+}
+if(points.length-1<minPerimeter)continue;
+const simple=simplifyContour(points,epsilon);
+if(simple.length<3)continue;
+const mapped=simple.map(([x,y])=>[(x-w/2)*1.8/w,(y-h/2)*1.8/w]);
+candidates.push({perimeter:points.length-1,points:mapped});
+}
+candidates.sort((a,b)=>b.perimeter-a.perimeter);
+return candidates.slice(0,maxPaths).map(c=>c.points);
+}
+function showVectorResult(binary,w,h,paths){
+inputPaths=paths;
+const preview=inputCtx.createImageData(w,h);
+for(let i=0;i<binary.length;i++){const j=i*4,v=binary[i]?255:0;preview.data[j]=v?43:3;preview.data[j+1]=v?231:13;preview.data[j+2]=v?174:16;preview.data[j+3]=255}
+inputCtx.putImageData(preview,0,0);
+$('sourceFps').textContent=inputFrameFps.toFixed(1)+' input FPS';
+$('contourCount').textContent=inputPaths.length+' contours';
+$('contourPoints').textContent=inputPaths.reduce((s,p)=>s+p.length,0)+' vector vertices';
+}
+if(window.laserDesktop?.desktop&&typeof Worker==='function'){
+try{
+vectorWorker=new Worker('./vector-worker.js');
+$('processorStatus').textContent='WORKER ACTIVE';
+vectorWorker.onmessage=e=>{
+vectorWorkerBusy=false;
+if(e.data.generation!==videoGeneration||videoMode==='none')return;
+if(e.data.error){$('videoStatus').textContent='Worker error: '+e.data.error;inputPaths=[];return}
+showVectorResult(e.data.binary,e.data.w,e.data.h,e.data.paths);
+};
+vectorWorker.onerror=e=>{
+console.warn('Vector worker stopped; using CPU fallback',e.message);
+vectorWorker?.terminate();vectorWorker=null;vectorWorkerBusy=false;
+$('processorStatus').textContent='CPU FALLBACK';
+};
+}catch(e){console.warn('Could not start worker',e);vectorWorker=null;$('processorStatus').textContent='CPU FALLBACK'}
+}
+function processPixelData(pixels,w,h){
+try{
+if(vectorWorker){
+vectorWorkerBusy=true;
+try{vectorWorker.postMessage({generation:videoGeneration,pixels:pixels.buffer,w,h,
+blur:+$('blur').value,threshold:+$('threshold').value,hysteresis:+$('hysteresis').value,minContour:+$('minContour').value,
+maxContours:+$('maxContours').value,simplify:+$('simplify').value},[pixels.buffer]);return}
+catch(err){vectorWorker.terminate();vectorWorker=null;vectorWorkerBusy=false;$('processorStatus').textContent='CPU FALLBACK'}
+}
+const gray=new Float32Array(w*h);
+for(let i=0;i<gray.length;i++){const a=i*4;gray[i]=pixels[a]*.2126+pixels[a+1]*.7152+pixels[a+2]*.0722}
+const smooth=blurGray(gray,w,h,Number($('blur').value)),binary=new Uint8Array(w*h),threshold=Number($('threshold').value);
+const hysteresis=Number($('hysteresis').value)||0;
+for(let i=0;i<binary.length;i++)binary[i]=smooth[i]>=threshold+(previousBinaryMain?.[i]?-hysteresis:hysteresis)?1:0;
+previousBinaryMain=binary.slice();
+showVectorResult(binary,w,h,traceContours(binary,w,h,Number($('minContour').value),Number($('maxContours').value),Number($('simplify').value)));
+}catch(err){$('videoStatus').textContent='Cannot process video: '+(err.message||err);inputPaths=[]}
+}
+function drawDemoFrame(now){
+const w=inputWork.width,h=inputWork.height;
+workCtx.fillStyle='#000';workCtx.fillRect(0,0,w,h);
+workCtx.strokeStyle='#fff';workCtx.lineWidth=2;
+workCtx.beginPath();
+const angle=now*.00035;
+for(let i=0;i<=6;i++){
+const a=i*Math.PI/3+angle,x=w/2+Math.cos(a)*w*.26,y=h/2+Math.sin(a)*h*.37;
+if(i===0)workCtx.moveTo(x,y);else workCtx.lineTo(x,y);
+}
+workCtx.stroke();
+workCtx.beginPath();workCtx.arc(w/2,h/2,9+Math.sin(angle*4)*3,0,Math.PI*2);workCtx.stroke();
+return workCtx.getImageData(0,0,w,h).data;
+}
+function processVideoFrame(now){
+if(videoMode==='none'||vectorWorkerBusy)return;
+const streaming=videoMode==='spout'||videoMode==='demo';
+const interval=streaming?50:85;
+if(now-lastVideoFrame<interval)return;
+let pixels;
+const w=inputWork.width,h=inputWork.height;
+if(videoMode==='spout'){
+if(!spoutPending)return;
+pixels=spoutPending;spoutPending=null;
+}else if(videoMode==='demo')pixels=drawDemoFrame(now);
+else{
+if(sourceVideo.readyState<2||!sourceVideo.videoWidth)return;
+try{workCtx.drawImage(sourceVideo,0,0,w,h);pixels=workCtx.getImageData(0,0,w,h).data}
+catch(err){$('videoStatus').textContent='Cannot read input: '+err.message;return}
+}
+const elapsed=now-lastVideoFrame;lastVideoFrame=now;
+inputFrameFps=inputFrameFps*.8+(1000/Math.max(interval,elapsed))*.2;
+processPixelData(pixels,w,h);
+}
+function stopInput(){
+videoGeneration++;
+previousBinaryMain=null;
+if(videoMode==='spout')window.laserDesktop?.spout?.stop().catch(()=>{});
+spoutPending=null;
+const stream=videoStream;videoStream=null;
+if(stream)for(const track of stream.getTracks()){track.onended=null;track.stop()}
+sourceVideo.pause();sourceVideo.srcObject=null;sourceVideo.removeAttribute('src');sourceVideo.load();
+if(videoURL){URL.revokeObjectURL(videoURL);videoURL=null}
+videoMode='none';inputPaths=[];inputFrameFps=0;lastVideoFrame=-Infinity;
+inputCtx.fillStyle='#040909';inputCtx.fillRect(0,0,inputPreview.width,inputPreview.height);
+$('sourceFps').textContent='0 input FPS';$('contourCount').textContent='0 contours';$('contourPoints').textContent='0 vector vertices';
+$('videoStatus').textContent='Video input stopped.';
+}
+$('stopVideo').onclick=stopInput;
+if(window.laserDesktop?.spout){
+window.laserDesktop.spout.onFrame(payload=>{
+if(videoMode!=='spout'||payload?.w!==96||payload?.h!==54||!payload.rgba)return;
+const data=new Uint8ClampedArray(payload.rgba);
+if(data.length===96*54*4)spoutPending=data; // latest frame wins; no growing queue
+});
+window.laserDesktop.spout.onStatus(message=>{
+if(videoMode!=='spout')return;
+$('spoutStatus').textContent=message.type==='error'?'Spout error: '+message.message:
+(message.sender?'Source: '+message.sender+' · ':'')+message.message;
+if(message.type==='error'||/odpojen|skončil/i.test(message.message)){inputPaths=[];spoutPending=null}
+});
+}
+$('spoutRefresh').onclick=async()=>{
+if(!window.laserDesktop?.spout){$('spoutStatus').textContent='Spout is available only in the Windows desktop app.';return}
+$('spoutStatus').textContent='Searching Spout senders…';
+try{
+const result=await window.laserDesktop.spout.listSources();
+if(!result.ok){$('spoutStatus').textContent=result.error;return}
+const choices=$('spoutSource');choices.replaceChildren();
+const active=document.createElement('option');active.value='';active.textContent='Active sender';choices.append(active);
+for(const name of result.senders){const option=document.createElement('option');option.value=name;option.textContent=name;choices.append(option)}
+$('spoutStatus').textContent='Found '+result.senders.length+' Spout sender(s).';
+}catch(err){$('spoutStatus').textContent='Spout list failed: '+err.message}
+};
+$('spoutStart').onclick=async()=>{
+if(!window.laserDesktop?.spout){$('spoutStatus').textContent='Requires Windows desktop edition.';return}
+const sender=$('spoutSource').value;
+stopInput();
+try{
+await window.laserDesktop.spout.stop();
+const result=await window.laserDesktop.spout.start(sender);
+if(!result.ok){$('spoutStatus').textContent=result.error;return}
+videoMode='spout';
+$('spoutStatus').textContent='Connecting '+(sender||'active sender')+'…';
+$('videoStatus').textContent='Native Spout input. Activate Video → Vector on L1/L2.';
+}catch(err){stopInput();$('spoutStatus').textContent='Cannot start Spout: '+err.message}
+};
+$('spoutDemo').onclick=()=>{
+stopInput();videoMode='demo';
+$('spoutStatus').textContent='Demo running locally; native Spout DLL not required.';
+$('videoStatus').textContent='Demo vector input. No actual laser output.';
+$('useVideoLayer').click();
+};
+$('captureWindow').onclick=async()=>{
+if(!navigator.mediaDevices?.getDisplayMedia){$('videoStatus').textContent='Screen Capture API unavailable. Try Chrome/Edge in a secure context.';return}
+stopInput();
+try{
+const stream=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:false});
+videoStream=stream;sourceVideo.srcObject=stream;videoMode='window';
+const track=stream.getVideoTracks()[0];if(track)track.onended=stopInput;
+await sourceVideo.play();$('videoStatus').textContent='Capturing selected window/screen: '+(track?.label||'video');
+}catch(err){stopInput();$('videoStatus').textContent='Capture cancelled or blocked: '+(err.message||err)}
+};
+$('loadVideo').onclick=()=>$('videoFile').click();
+$('videoFile').onchange=async e=>{
+const file=e.target.files?.[0];if(!file)return;stopInput();
+try{videoURL=URL.createObjectURL(file);sourceVideo.src=videoURL;sourceVideo.loop=true;sourceVideo.muted=true;videoMode='file';await sourceVideo.play();$('videoStatus').textContent='Playing video: '+file.name}
+catch(err){stopInput();$('videoStatus').textContent='Could not play video: '+(err.message||err)}
+e.target.value='';
+};
+$('useVideoLayer').onclick=()=>{state.layers[0].effect='video';state.layers[0].enabled=true;state.selected=0;bindControls()};
+for(const k of ['threshold','hysteresis','blur','minContour','simplify','maxContours']){
+$(k).oninput=()=>$(k+'V').textContent=$(k).value+(['minContour','simplify'].includes(k)?' px':'');
+}
+function paint(now){
+requestAnimationFrame(paint);
+const dt=Math.min(.1,(now-last)/1000);last=now;if(state.run){time+=dt;beatClock+=dt*state.bpm/60;tickSequencer()}fps=fps*.9+.1/Math.max(.001,dt);
+processVideoFrame(now);
+const[w,h]=fitCanvas(preview,ctx),unit=Math.min(w,h)*.46;
+ctx.fillStyle='#010506';ctx.fillRect(0,0,w,h);
+if(state.showGrid){ctx.strokeStyle='#143a37';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(w/2,0);ctx.lineTo(w/2,h);ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke()}
+lastFrame=buildFrame(time);ctx.lineWidth=1.2;let prevLit=null,prevAny=null,lit=0,blank=0;
+for(const p of lastFrame){
+const px=w/2+p.x*unit,py=h/2+p.y*unit;
+if(p.blank){
+blank++;
+if(state.showTravel&&!state.blackout&&!seqBlackoutActive&&prevAny){ctx.strokeStyle='rgba(255,170,75,.26)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(w/2+prevAny.x*unit,h/2+prevAny.y*unit);ctx.lineTo(px,py);ctx.stroke()}
+prevLit=null;
+}else{
+lit++;
+if(prevLit){ctx.strokeStyle='rgb('+p.r+','+p.g+','+p.b+')';ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(w/2+prevLit.x*unit,h/2+prevLit.y*unit);ctx.lineTo(px,py);ctx.stroke()}
+if(state.showPoints){ctx.fillStyle='#fff';ctx.fillRect(px-1,py-1,2,2)}
+prevLit=p;
+}
+prevAny=p;
+}
+if(state.zonesEnabled&&state.zones.length){
+for(const zone of state.zones){
+const xx=w/2+zone.x1*unit,yy=h/2+zone.y1*unit,zw=(zone.x2-zone.x1)*unit,zh=(zone.y2-zone.y1)*unit;
+ctx.fillStyle='rgba(220,65,85,.14)';ctx.fillRect(xx,yy,zw,zh);
+ctx.strokeStyle='rgba(255,120,140,.55)';ctx.lineWidth=1;ctx.strokeRect(xx,yy,zw,zh);
+}
+}
+const n=lastFrame.length,budget=Math.floor(state.scanRate/state.targetFps);
+$('timelineSeek').value=Math.round(timelinePhase(time)*1000);
+$('timelineTrack').style.setProperty('--phase',(timelinePhase(time)*100).toFixed(2)+'%');
+$('timelineValue').textContent=(timelinePhase(time)*state.durationBeats).toFixed(2)+' / '+state.durationBeats+' beats';
+$('fps').textContent=Math.round(fps);$('points').textContent=n;$('kpps').textContent=(n*state.targetFps/1000).toFixed(1);
+$('paths').textContent=pathsCount;$('lit').textContent=lit;$('blank').textContent=blank;
+$('duration').textContent=(n/state.scanRate*1000).toFixed(1)+' ms';$('travel').textContent=travelDistance.toFixed(2);
+$('budgetText').textContent='Point budget: '+budget+' points / frame ('+state.targetFps+' FPS @ '+state.scanRate/1000+' kpps)';
+$('budgetWarning').classList.toggle('hide',n<=budget&&n<16000);
+}
+requestAnimationFrame(paint);
+$('run').onclick=()=>{state.run=!state.run;$('run').textContent=state.run?'PAUSE':'RESUME'};$('bpm').oninput=()=>{state.bpm=+$('bpm').value;$('bpmV').textContent=state.bpm};$('master').oninput=()=>{state.master=+$('master').value;$('masterV').textContent=state.master+'%'};$('mask').onchange=()=>state.mask=$('mask').value;$('showPoints').onchange=()=>state.showPoints=$('showPoints').checked;$('showGrid').onchange=()=>state.showGrid=$('showGrid').checked;
+$('crossfade').oninput=()=>{state.crossfade=Number($('crossfade').value)/100;showCrossfade()};
+function showCrossfade(){$('crossfadeV').textContent='L1 '+Math.round((1-state.crossfade)*100)+'% / L2 '+Math.round(state.crossfade*100)+'%'}
+$('transitionBeats').onchange=()=>state.transitionBeats=Number($('transitionBeats').value);
+$('showTravel').onchange=()=>state.showTravel=$('showTravel').checked;
+$('optimize').onchange=()=>state.optimize=$('optimize').checked;
+for(const key of ['spacing','dwell','scanRate','targetFps']){
+$(key).oninput=()=>{state[key]=Number($(key).value);showPlannerValues()};
+}
+function showPlannerValues(){
+$('spacingV').textContent=state.spacing.toFixed(3);
+$('dwellV').textContent=state.dwell+' pts';
+$('scanRateV').textContent=(state.scanRate/1000).toFixed(0)+' kpps';
+$('targetFpsV').textContent=state.targetFps+' FPS';
+}
+$('tap').onclick=()=>{let now=performance.now();beatTicks=beatTicks.filter(n=>now-n<4000);beatTicks.push(now);if(beatTicks.length>1){state.bpm=Math.max(60,Math.min(200,Math.round(60000*(beatTicks.length-1)/(now-beatTicks[0]))));$('bpm').value=state.bpm;$('bpmV').textContent=state.bpm}};$('beatReset').onclick=()=>{beatTicks=[];seqStartBeat-=beatClock;beatClock=0;time=0};
+$('timelineEnabled').onchange=()=>{selected().timelineEnabled=$('timelineEnabled').checked;drawKeyframes()};
+$('timelinePlay').onchange=()=>{state.timelinePlay=$('timelinePlay').checked;drawKeyframes()};
+$('durationBeats').onchange=()=>{state.durationBeats=Number($('durationBeats').value);drawKeyframes()};
+$('easing').onchange=()=>state.easing=$('easing').value;
+$('timelineSeek').oninput=()=>{
+state.timelinePlay=false;$('timelinePlay').checked=false;state.playhead=Number($('timelineSeek').value)/1000;
+drawKeyframes();
+};
+$('saveKey').onclick=()=>{
+const l=selected(),p=Math.round(timelinePhase(time)*1000)/1000;
+if(!l.keyframes.length)l.keyframes=[snapshot(l,0),snapshot(l,1)];
+const key=snapshot(l,p),index=l.keyframes.findIndex(k=>Math.abs(k.p-p)<.002);
+if(index>=0)l.keyframes[index]=key;else l.keyframes.push(key);
+setKeys(l.keyframes);
+};
+$('removeKey').onclick=()=>{
+const l=selected(),p=timelinePhase(time);
+if(!l.keyframes.length)return;
+const distances=l.keyframes.map((k,i)=>({i,d:Math.abs(k.p-p)})).sort((a,b)=>a.d-b.d);
+if(distances[0].d<=.04)l.keyframes.splice(distances[0].i,1);
+drawKeyframes();
+};
+$('resetKeys').onclick=()=>{selected().keyframes=[];selected().timelineEnabled=false;bindControls()};
+$('presetSpin').onclick=()=>{
+const l=selected(),a=snapshot(l,0),b=snapshot(l,1);b.rotation=a.rotation+360;setKeys([a,b]);
+};
+$('presetPulse').onclick=()=>{
+const l=selected(),a=snapshot(l,0),b=snapshot(l,.5),c=snapshot(l,1);
+a.scale=Math.max(.1,a.scale*.55);b.scale=Math.min(1,b.scale*1.2);c.scale=a.scale;setKeys([a,b,c]);
+};
+$('presetMove').onclick=()=>{
+const l=selected(),a=snapshot(l,0),b=snapshot(l,.5),c=snapshot(l,1);
+a.x=Math.max(-1,a.x-.35);b.x=Math.min(1,b.x+.35);c.x=a.x;setKeys([a,b,c]);
+};
+function download(name,data){const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000)}
+$('saveScene').onclick=()=>download('laser_dj_scene_v12.json',{format:'LaserDJLiveSceneV12',...state,run:false,blackout:false,flash:false});
+$('exportFrame').onclick=()=>download('laser_dj_points_v12.json',{format:'LaserDJLiveVirtualFrameV12',simulationOnly:true,pointRateTarget:state.scanRate,targetFps:state.targetFps,warning:'NOT FOR HARDWARE OUTPUT',points:lastFrame});
+$('openScene').onclick=()=>$('sceneFile').click();
+$('sceneFile').onchange=async e=>{
+let file=e.target.files?.[0];if(!file)return;
+try{
+let d=JSON.parse(await file.text());
+if(!['LaserDJLiveSceneV02','LaserDJLiveSceneV03','LaserDJLiveSceneV04','LaserDJLiveSceneV05','LaserDJLiveSceneV06','LaserDJLiveSceneV07','LaserDJLiveSceneV08','LaserDJLiveSceneV09','LaserDJLiveSceneV10','LaserDJLiveSceneV11','LaserDJLiveSceneV12'].includes(d.format)||!Array.isArray(d.layers)||d.layers.length!==2)throw Error('Neplatný formát scény');
+for(let l of d.layers){
+if(!['tunnel','circles','spiral','fan','grid','custom','video'].includes(l.effect)||!/^#[0-9a-fA-F]{6}$/.test(l.color)||!Array.isArray(l.custom)||l.custom.length>1000)throw Error('Neplatná data vrstvy');
+if(l.custom.some(p=>!Array.isArray(p)||p.length!==2||p.some(n=>!Number.isFinite(n)||Math.abs(n)>1)))throw Error('Neplatné souřadnice');
+for(let k of ['speed','scale','rotation','brightness'])if(!Number.isFinite(l[k]))throw Error('Neplatný parametr '+k);
+for(const k of ['x','y'])l[k]=Number.isFinite(l[k])?Math.max(-1,Math.min(1,l[k])):0;
+if(!Array.isArray(l.keyframes))l.keyframes=[];
+if(l.keyframes.length>100)throw Error('Příliš mnoho keyframes');
+for(const key of l.keyframes){
+if(!Number.isFinite(key.p)||key.p<0||key.p>1||keyProps.some(prop=>!Number.isFinite(key[prop])))throw Error('Neplatný keyframe');
+}
+l.timelineEnabled=!!l.timelineEnabled;
+VectorPaths.upgradeLayer(l);
+}
+state.layers=d.layers;state.selected=0;resetVectorHistory();
+state.master=Number.isFinite(d.master)?Math.max(0,Math.min(100,d.master)):100;
+state.bpm=Number.isFinite(d.bpm)?Math.max(60,Math.min(200,d.bpm)):138;
+state.mask=['none','bottom','left','right'].includes(d.mask)?d.mask:'none';
+state.zones=MaskZones.sanitizeZones(d.zones);state.zonesEnabled=d.zonesEnabled!==false;
+$('maskZonesEnabled').checked=state.zonesEnabled;drawMaskEditor();
+state.showPoints=!!d.showPoints;state.showGrid=d.showGrid!==false;
+state.showTravel=!!d.showTravel;state.optimize=d.optimize!==false;
+for(let [key,min,max,fallback] of [['spacing',.012,.080,.03],['dwell',0,6,2],['scanRate',10000,40000,30000],['targetFps',15,60,30]]){
+state[key]=Number.isFinite(d[key])?Math.max(min,Math.min(max,d[key])):fallback;$(key).value=state[key];
+}
+state.timelinePlay=d.timelinePlay!==false;state.durationBeats=[4,8,16,32,64].includes(d.durationBeats)?d.durationBeats:8;
+state.easing=['smooth','linear','hold'].includes(d.easing)?d.easing:'smooth';
+state.playhead=Number.isFinite(d.playhead)?Math.max(0,Math.min(1,d.playhead)):0;
+state.crossfade=Number.isFinite(d.crossfade)?Math.max(0,Math.min(1,d.crossfade)):.5;
+state.transitionBeats=[0,1,2,4,8,16].includes(d.transitionBeats)?d.transitionBeats:2;
+state.blackout=false;state.flash=false;transition=null;
+state.sequence=normalizeSequence(d.sequence);
+seqStartBeat=beatClock;seqStepAbs=-1;seqBlackoutActive=false;seqFlashUntil=-1;
+$('seqStepBeats').value=state.sequence.stepBeats;renderSequencer();
+$('blackout').textContent='BLACKOUT: OFF';$('blackout').classList.toggle('primary',false);
+$('crossfade').value=Math.round(state.crossfade*100);showCrossfade();
+$('transitionBeats').value=state.transitionBeats;
+$('timelinePlay').checked=state.timelinePlay;$('durationBeats').value=state.durationBeats;
+$('easing').value=state.easing;$('timelineSeek').value=Math.round(state.playhead*1000);
+$('master').value=state.master;$('masterV').textContent=state.master+'%';
+$('bpm').value=state.bpm;$('bpmV').textContent=state.bpm;$('mask').value=state.mask;
+for(const id of ['showPoints','showGrid','showTravel','optimize'])$(id).checked=state[id];
+showPlannerValues();bindControls();activeSlot=-1;renderBank();
+}catch(err){alert('Scénu nelze načíst: '+err.message)}
+e.target.value='';
+};
+const copy=data=>JSON.parse(JSON.stringify(data));
+const BANK_KEY='LaserDJLiveV05SceneBank';
+function sceneSnapshot(){
+return{layers:copy(state.layers),crossfade:state.crossfade,durationBeats:state.durationBeats,easing:state.easing};
+}
+function builtInBank(){
+const presets=[
+['PSY TUNNEL','tunnel','#3effc6',1,.65],
+['NEON CIRCLES','circles','#a87bff',.75,.7],
+['HYPNO SPIRAL','spiral','#ff589f',.65,.82],
+['LASER FAN','fan','#4de9ff',1,.8],
+['TECHNO GRID','grid','#ffe77d',.4,.8],
+['FAST TUNNEL','tunnel','#ff784d',2,.82],
+['MINIMAL RINGS','circles','#a6ffa1',-.2,.48],
+['DUAL PSY','spiral','#f755e6',.5,.63]
+];
+return presets.map(([name,effect,color,speed,scale],i)=>{
+const layers=defaults();layers[0].effect=effect;layers[0].color=color;layers[0].speed=speed;layers[0].scale=scale;
+if(i===7){layers[1].enabled=true;layers[1].effect='tunnel';layers[1].scale=.48;layers[1].color='#45e7de'}
+return{name,scene:{layers,crossfade:.5,durationBeats:8,easing:'smooth'}};
+});
+}
+function validateBank(data){
+if(data.format!=='LaserDJLiveBankV05'||!Array.isArray(data.slots)||data.slots.length!==8)throw Error('Neplatná banka');
+for(const s of data.slots){
+if(typeof s.name!=='string'||s.name.length>50||!s.scene||!Array.isArray(s.scene.layers)||s.scene.layers.length!==2)throw Error('Neplatný slot');
+for(const l of s.scene.layers){
+if(!['tunnel','circles','spiral','fan','grid','custom','video'].includes(l.effect)||!/^#[0-9a-fA-F]{6}$/.test(l.color)||!Array.isArray(l.custom)||l.custom.length>1000)throw Error('Neplatná vrstva v bance');
+if(l.custom.some(p=>!Array.isArray(p)||p.length!==2||p.some(n=>!Number.isFinite(n)||Math.abs(n)>1)))throw Error('Neplatné body v bance');
+if(l.vectorPaths!==undefined)VectorPaths.validate(l.vectorPaths);
+for(const prop of ['speed','scale','rotation','brightness','x','y'])if(!Number.isFinite(l[prop]))throw Error('Neplatná hodnota '+prop);
+if(!Array.isArray(l.keyframes)||l.keyframes.length>100)throw Error('Neplatné keyframes');
+if(l.keyframes.some(k=>!Number.isFinite(k.p)||k.p<0||k.p>1||keyProps.some(p=>!Number.isFinite(k[p]))))throw Error('Neplatná animace');
+}}
+return data.slots;
+}
+function loadBank(){
+try{
+const raw=localStorage.getItem(BANK_KEY);
+if(raw)return validateBank(JSON.parse(raw));
+}catch(e){/* private file storage may be unavailable */}
+return builtInBank();
+}
+function persistBank(){
+try{localStorage.setItem(BANK_KEY,JSON.stringify({format:'LaserDJLiveBankV05',slots:bank}));$('bankStatus').textContent='Bank saved in this browser. Export for backup.'}
+catch(e){$('bankStatus').textContent='Local storage unavailable: use EXPORT BANK for backup.'}
+}
+function renderBank(){
+const root=$('bankGrid');root.replaceChildren();
+bank.forEach((slot,index)=>{
+const b=document.createElement('button');
+b.className='slot'+(activeSlot===index?' playing':'')+(storeArmed?' store':'');
+const n=document.createElement('span');n.className='index';n.textContent='SCENE '+String(index+1).padStart(2,'0');
+const title=document.createElement('strong');title.textContent=slot.name;
+const detail=document.createElement('span');detail.className='detail';
+detail.textContent=slot.scene.layers.filter(l=>l.enabled).map(l=>l.effect.toUpperCase()).join(' + ');
+b.append(n,title,detail);b.onclick=()=>triggerSlot(index);root.append(b);
+});
+}
+function triggerSlot(index,fromSequence=false){
+const slot=bank[index];if(!slot)return;
+if(storeArmed&&!fromSequence){
+const answer=window.prompt('Name of scene '+(index+1)+':',slot.name||'MY SCENE');
+if(answer===null)return;
+bank[index]={name:answer.trim().slice(0,50)||'MY SCENE',scene:sceneSnapshot()};
+storeArmed=false;$('storeMode').textContent='STORE MODE: OFF';persistBank();renderBank();return;
+}
+const previous=sceneSnapshot(),next=copy(slot.scene);
+state.layers=next.layers;resetVectorHistory();state.crossfade=Number.isFinite(next.crossfade)?Math.max(0,Math.min(1,next.crossfade)):.5;
+state.durationBeats=[4,8,16,32,64].includes(next.durationBeats)?next.durationBeats:8;
+state.easing=['smooth','linear','hold'].includes(next.easing)?next.easing:'smooth';
+transition=state.transitionBeats>0?{from:previous,startTime:time,durationBeats:state.transitionBeats}:null;
+activeSlot=index;
+$('crossfade').value=Math.round(state.crossfade*100);showCrossfade();
+$('durationBeats').value=state.durationBeats;$('easing').value=state.easing;
+bindControls();renderBank();
+$('bankStatus').textContent='Playing '+slot.name+' · '+state.transitionBeats+' beat transition';
+}
+$('storeMode').onclick=()=>{storeArmed=!storeArmed;$('storeMode').textContent='STORE MODE: '+(storeArmed?'ON':'OFF');renderBank()};
+$('exportBank').onclick=()=>download('laser_dj_bank_v05.json',{format:'LaserDJLiveBankV05',slots:bank});
+$('importBank').onclick=()=>$('bankFile').click();
+$('bankFile').onchange=async e=>{
+const file=e.target.files?.[0];if(!file)return;
+try{const next=validateBank(JSON.parse(await file.text()));bank=copy(next);activeSlot=-1;transition=null;persistBank();renderBank();$('bankStatus').textContent='Imported '+bank.length+' scenes.'}
+catch(err){alert('Cannot import bank: '+err.message)}
+e.target.value='';
+};
+$('resetBank').onclick=()=>{
+if(!window.confirm('Replace the current 8 scene slots with built-in presets? Export your bank first if needed.'))return;
+bank=builtInBank();activeSlot=-1;transition=null;persistBank();renderBank();
+};
+$('blackout').onclick=()=>{state.blackout=!state.blackout;$('blackout').textContent='BLACKOUT: '+(state.blackout?'ON':'OFF');$('blackout').classList.toggle('primary',state.blackout)};
+$('flash').onpointerdown=()=>state.flash=true;
+$('flash').onpointerup=()=>state.flash=false;
+$('flash').onpointercancel=()=>state.flash=false;
+window.addEventListener('pointerup',()=>state.flash=false);
+window.addEventListener('blur',()=>state.flash=false);
+window.addEventListener('keydown',e=>{
+if(e.altKey||e.ctrlKey||e.metaKey||['INPUT','SELECT','TEXTAREA'].includes(e.target?.tagName))return;
+if(/^[1-8]$/.test(e.key))triggerSlot(Number(e.key)-1);
+if(e.key==='Escape'&&storeArmed){storeArmed=false;$('storeMode').textContent='STORE MODE: OFF';renderBank()}
+});
+function normalizeSequence(input){
+const result=defaultSequence();
+if(!input||typeof input!=='object')return result;
+if([.5,1,2,4].includes(input.stepBeats))result.stepBeats=input.stepBeats;
+if(Array.isArray(input.scenes)&&input.scenes.length===16)result.scenes=input.scenes.map(n=>Number.isInteger(n)&&n>=0&&n<=8?n:0);
+if(Array.isArray(input.flash)&&input.flash.length===16)result.flash=input.flash.map(Boolean);
+if(Array.isArray(input.blackout)&&input.blackout.length===16)result.blackout=input.blackout.map(Boolean);
+result.on=false;
+return result;
+}
+function renderSequencer(){
+const root=$('seqGrid');root.replaceChildren();
+function row(label,items,kind){
+const wrapper=document.createElement('div');wrapper.className='seqRow';
+const name=document.createElement('span');name.className='lane';name.textContent=label;wrapper.append(name);
+items.forEach((value,i)=>{
+const b=document.createElement('button');
+b.className='seqCell'+(value?(kind==='scene'?' on':kind==='flash'?' flashOn':' blackOn'):'')+(state.sequence.on&&seqStepAbs>=0&&seqStepAbs%16===i?' now':'');
+b.textContent=kind==='scene'?(value?String(value):'—'):(value?'●':'·');
+b.title='Step '+(i+1)+' – '+kind;
+b.onclick=e=>{
+if(kind==='scene')state.sequence.scenes[i]=e.shiftKey?0:(value+1)%9;
+else state.sequence[kind][i]=!value;
+renderSequencer();
+};
+b.oncontextmenu=e=>{e.preventDefault();state.sequence[kind==='scene'?'scenes':kind][i]=kind==='scene'?0:false;renderSequencer()};
+wrapper.append(b);
+});
+root.append(wrapper);
+}
+const head=document.createElement('div');head.className='seqRow';
+const title=document.createElement('span');title.className='lane';title.textContent='STEP';head.append(title);
+for(let i=0;i<16;i++){const n=document.createElement('span');n.className='seqCell head';n.textContent=(i+1).toString().padStart(2,'0');head.append(n)}
+root.append(head);
+row('SCENE',state.sequence.scenes,'scene');
+row('FLASH',state.sequence.flash,'flash');
+row('BLACKOUT',state.sequence.blackout,'blackout');
+$('seqToggle').textContent='SEQUENCER: '+(state.sequence.on?'ON':'OFF');
+$('seqPosition').textContent=state.sequence.on&&seqStepAbs>=0?'STEP '+(seqStepAbs%16+1)+' / 16':'STEP — / 16';
+}
+function tickSequencer(){
+const seq=state.sequence;
+if(!seq.on)return;
+const abs=Math.floor(Math.max(0,beatClock-seqStartBeat)/seq.stepBeats);
+if(abs===seqStepAbs)return;
+seqStepAbs=abs;
+const i=abs%16,scene=seq.scenes[i];
+seqBlackoutActive=!!seq.blackout[i];
+seqFlashUntil=seq.flash[i]?beatClock+.25:-1;
+if(scene>0)triggerSlot(scene-1,true);
+renderSequencer();
+}
+$('seqToggle').onclick=()=>{
+state.sequence.on=!state.sequence.on;
+seqStartBeat=beatClock;seqStepAbs=-1;seqBlackoutActive=false;seqFlashUntil=-1;
+renderSequencer();
+};
+$('seqStepBeats').onchange=()=>{
+state.sequence.stepBeats=Number($('seqStepBeats').value);
+seqStartBeat=beatClock;seqStepAbs=-1;renderSequencer();
+};
+$('seqReset').onclick=()=>{seqStartBeat=beatClock;seqStepAbs=-1;seqBlackoutActive=false;seqFlashUntil=-1;renderSequencer()};
+$('seqClear').onclick=()=>{state.sequence.scenes.fill(0);state.sequence.flash.fill(false);state.sequence.blackout.fill(false);renderSequencer()};
+$('seqRandom').onclick=()=>{
+const seq=state.sequence;
+seq.scenes=Array(16).fill(0);seq.flash=Array(16).fill(false);seq.blackout=Array(16).fill(false);
+for(let i=0;i<16;i+=4)seq.scenes[i]=1+Math.floor(Math.random()*8);
+seq.flash[0]=true;seq.flash[8]=true;
+renderSequencer();
+};
+const MIDI_KEY='LaserDJLiveV06MidiMappings';
+function loadMidiMappings(){
+try{const d=JSON.parse(localStorage.getItem(MIDI_KEY)||'[]');return Array.isArray(d)?d.filter(m=>m&&[0x90,0xB0].includes(m.type)&&Number.isInteger(m.channel)&&m.channel>=0&&m.channel<=15&&Number.isInteger(m.number)&&m.number>=0&&m.number<=127&&typeof m.target==='string').slice(0,64):[]}
+catch(e){return[]}
+}
+function persistMidi(){
+try{localStorage.setItem(MIDI_KEY,JSON.stringify(midiMappings.map(({type,channel,number,target})=>({type,channel,number,target}))))}catch(e){}
+}
+function renderMidiMappings(){
+const root=$('midiMappingList');root.replaceChildren();
+if(!midiMappings.length){const t=document.createElement('span');t.className='help';t.textContent='No mappings yet.';root.append(t)}
+for(const m of midiMappings){
+const b=document.createElement('span');b.className='midiMapping';
+b.textContent=(m.type===0xB0?'CC':'NOTE')+' '+m.number+' · CH'+(m.channel+1)+' → '+m.target;root.append(b);
+}}
+function midiAction(mapping,value,type){
+const target=mapping.target,pressed=type===0xB0?value>=64:value>0;
+if(target==='crossfade'){state.crossfade=value/127;$('crossfade').value=Math.round(state.crossfade*100);showCrossfade();return}
+if(target==='master'){state.master=Math.round(value/127*100);$('master').value=state.master;$('masterV').textContent=state.master+'%';return}
+if(target==='bpm'){state.bpm=Math.round(60+value/127*140);$('bpm').value=state.bpm;$('bpmV').textContent=state.bpm;return}
+if(target==='flash'){state.flash=pressed;return}
+if(pressed&&!mapping.lastPressed){
+if(target==='nextScene')triggerSlot((activeSlot+1+8)%8,true);
+if(target==='prevScene')triggerSlot((activeSlot-1+8)%8,true);
+if(target==='blackout'){$('blackout').click()}
+if(target==='seqToggle'){$('seqToggle').click()}
+}
+mapping.lastPressed=pressed;
+}
+function handleMidiMessage(event){
+const data=event.data||[],status=data[0]||0,type=status&0xF0,channel=status&0x0F,number=data[1]||0,value=data[2]||0;
+if(![0x80,0x90,0xB0].includes(type))return;
+const base=type===0x80?0x90:type,level=type===0x80?0:value;
+$('midiLast').textContent='Last MIDI: '+(base===0xB0?'CC':'NOTE')+' '+number+' CH '+(channel+1)+' / '+level;
+if(midiLearning&&(base===0xB0||(base===0x90&&level>0))){
+const target=$('midiTarget').value;
+midiMappings=midiMappings.filter(m=>!(m.type===base&&m.channel===channel&&m.number===number));
+midiMappings.push({type:base,channel,number,target,lastPressed:false});
+midiLearning=false;$('midiLearn').textContent='LEARN: OFF';
+persistMidi();renderMidiMappings();$('midiStatus').textContent='Mapped '+target+' to '+(base===0xB0?'CC':'NOTE')+' '+number+' on channel '+(channel+1);return;
+}
+for(const map of midiMappings)if(map.type===base&&map.channel===channel&&map.number===number)midiAction(map,level,base);
+}
+function registerMidiInputs(){
+if(!midiAccess)return;
+const names=[];
+for(const input of midiAccess.inputs.values()){input.onmidimessage=handleMidiMessage;names.push(input.name||'MIDI input')}
+$('midiStatus').textContent=names.length?'Connected: '+names.join(', '):'MIDI permission granted; no input devices found.';
+}
+$('midiConnect').onclick=async()=>{
+if(!navigator.requestMIDIAccess){$('midiStatus').textContent='Web MIDI unavailable. Try current Chrome/Edge and allow MIDI permission.';return}
+try{midiAccess=await navigator.requestMIDIAccess({sysex:false});midiAccess.onstatechange=registerMidiInputs;registerMidiInputs()}
+catch(e){$('midiStatus').textContent='MIDI connection blocked: '+(e.message||e.name||'unknown error')}
+};
+$('midiLearn').onclick=()=>{midiLearning=!midiLearning;$('midiLearn').textContent='LEARN: '+(midiLearning?'WAITING FOR MIDI':'OFF')};
+$('midiClear').onclick=()=>{if(!window.confirm('Clear all MIDI mappings?'))return;midiMappings=[];persistMidi();renderMidiMappings()};
+midiMappings=loadMidiMappings();renderMidiMappings();
+bank=loadBank();renderBank();renderSequencer();showCrossfade();showPlannerValues();bindControls();drawMaskEditor();window.addEventListener('resize',drawEditor);window.addEventListener('resize',drawMaskEditor);
+</script></body></html>

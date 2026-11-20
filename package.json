@@ -1,0 +1,28 @@
+{
+  "name": "laser-dj-live-desktop",
+  "version": "1.2.0",
+  "description": "Laser DJ Live – offline laser-vector design studio (virtual output only)",
+  "private": true,
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check electron/main.cjs && node --check electron/preload.cjs && node --check electron/spout-bridge.cjs && node --check app/vector-worker.js && node --check app/mask-zones.js && node --check app/vector-edit.js && node --check app/vector-paths.js && node tests/smoke.cjs && node tests/mask-zones.cjs && node tests/vector-edit.cjs && node tests/vector-paths.cjs && node tests/regression_v07.cjs && node tests/electron-main.cjs && node tests/spout-bridge.cjs && node tests/spout-renderer.cjs",
+    "dist:win": "electron-builder --win --x64",
+    "dist:portable": "electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "45.4.1",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "cz.laserdj.live",
+    "productName": "Laser DJ Live",
+    "directories": { "output": "dist" },
+    "files": ["app/**/*", "electron/**/*", "package.json"],
+    "extraResources": [
+      { "from": "native/bin", "to": "spout", "filter": ["**/*"] }
+    ],
+    "win": { "target": ["nsis", "portable"] },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+  }
+}
