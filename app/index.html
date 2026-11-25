@@ -184,10 +184,12 @@ const workspaceViews={
   settings:{title:'NASTAVENÍ & BEZPEČNOST',description:'Virtuální náhled, geometrie skeneru a vytmavené zóny.',panels:['plannerPanel','previewPanel','maskPanel']}
 };
 let workspaceView='live';
+const WORKSPACE_VIEW_KEY='LaserDJLiveWorkspaceView';
 function setWorkspaceView(view){
   const config=workspaceViews[view];if(!config)return;
   const changed=workspaceView!==view;
   workspaceView=view;
+  try{localStorage.setItem(WORKSPACE_VIEW_KEY,view)}catch(e){}
   const main=$('workspaceMain');main.setAttribute?.('data-workspace',view);
   if(document.body?.dataset)document.body.dataset.workspace=view;
   for(const id of ['mixerPanel','vectorEditorPanel','previewPanel','liveControlsPanel','plannerPanel','maskPanel','studioPanel','bankPanel','sequencerPanel','midiPanel','videoPanel'])$(id).hidden=!config.panels.includes(id);
@@ -202,11 +204,18 @@ function setWorkspaceView(view){
 document.querySelectorAll('[data-workspace-tab]').forEach(button=>button.addEventListener('click',()=>setWorkspaceView(button.dataset.workspaceTab)));
 function setFocusMode(enabled){
   document.body.classList.toggle('focusMode',enabled);
+  try{localStorage.setItem('LaserDJLiveFocusMode',enabled?'1':'0')}catch(e){}
   $('focusMode').textContent=enabled?'EXIT FOCUS':'FOCUS PREVIEW';
   $('focusMode').setAttribute('aria-pressed',String(enabled));
   requestAnimationFrame(()=>{fitCanvas(preview,ctx);drawMaskEditor()});
 }
 $('focusMode').onclick=()=>setFocusMode(!document.body.classList.contains('focusMode'));
+function restoreWorkspaceView(){
+  let view='live',focus=false;
+  try{if(Object.prototype.hasOwnProperty.call(workspaceViews,localStorage.getItem(WORKSPACE_VIEW_KEY)))view=localStorage.getItem(WORKSPACE_VIEW_KEY);focus=localStorage.getItem('LaserDJLiveFocusMode')==='1'}catch(e){}
+  setWorkspaceView(view);
+  if(focus)setFocusMode(true);
+}
 const MaskZones=window.LaserMaskZones;
 const VectorEdit=window.LaserVectorEdit;
 const VectorPaths=window.LaserVectorPaths;
@@ -1198,5 +1207,5 @@ catch(e){$('midiStatus').textContent='MIDI connection blocked: '+(e.message||e.n
 $('midiLearn').onclick=()=>{midiLearning=!midiLearning;$('midiLearn').textContent='LEARN: '+(midiLearning?'WAITING FOR MIDI':'OFF')};
 $('midiClear').onclick=()=>{if(!window.confirm('Clear all MIDI mappings?'))return;midiMappings=[];persistMidi();renderMidiMappings()};
 midiMappings=loadMidiMappings();renderMidiMappings();
-bank=loadBank();renderBank();renderSequencer();showCrossfade();showPlannerValues();bindControls();drawMaskEditor();setWorkspaceView('live');window.addEventListener('resize',drawEditor);window.addEventListener('resize',drawMaskEditor);
+bank=loadBank();renderBank();renderSequencer();showCrossfade();showPlannerValues();bindControls();drawMaskEditor();setWorkspaceView('live');restoreWorkspaceView();window.addEventListener('resize',drawEditor);window.addEventListener('resize',drawMaskEditor);
 </script></body></html>
