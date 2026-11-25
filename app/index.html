@@ -19,6 +19,13 @@ button,select{transition:border-color .15s,background .15s,transform .15s}button
 .workspaceNav button small{font-size:10px;color:#819da9;letter-spacing:0;font-weight:500}.workspaceNav button .navIcon{font-size:20px;line-height:1;color:#6e9daa}
 .workspaceNav button.active{background:#1a403b;border:1px solid #408978;color:#e9fff7;box-shadow:inset 0 0 0 1px #2f685b}.workspaceNav button.active .navIcon{color:#73f2cb}.workspaceNav button.active small{color:#a2d8c9}
 .workspaceIntro{max-width:1880px;margin:auto;padding:20px 22px 8px;display:flex;align-items:center;justify-content:space-between;gap:14px}.workspaceIntro h1{font-size:23px;letter-spacing:.6px;margin:6px 0 4px;color:#f2fcff}.workspaceIntro p{font-size:12px;margin:0;color:#9cb8c3}.eyebrow{font-size:10px;letter-spacing:2px;color:#5fd9b5;font-weight:750}.viewSafety{border:1px solid #543947;color:#efb1ba;background:#281b26;border-radius:99px;padding:9px 13px;font-size:10px;letter-spacing:1px;font-weight:750;white-space:nowrap}
+.quickStatus{max-width:1880px;margin:0 auto;padding:4px 22px 14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.quickStatusItem{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px;border:1px solid #284653;border-radius:9px;background:#0d1e28;color:#8faeb8;font-size:10px;letter-spacing:.8px;text-transform:uppercase}.quickStatusItem strong{color:#e2fbf4;font-size:12px;letter-spacing:0;font-variant-numeric:tabular-nums;white-space:nowrap}.quickStatusItem.live strong{color:#75edc6}.quickStatusItem.alert strong{color:#f1bd82}.quickStatusItem.paused{border-color:#8d603b;background:#251d18}.quickStatusItem.paused strong{color:#ffc47d}@media(max-width:820px){.quickStatus{padding:4px 10px 10px;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.quickStatusItem{padding:8px 10px}}
+.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.statGroup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:8px;border:1px solid #284653;border-radius:10px;background:#0a1a23}.statGroup:before{grid-column:1/-1;color:#6ed9bd;font-size:9px;font-weight:800;letter-spacing:1.5px}.statGroup.performance:before{content:'VÝKON NÁHLEDU'}.statGroup.diagnostics:before{content:'DIAGNOSTIKA SNÍMKU';color:#d4ae79}.statGroup.diagnostics{border-color:#4b4435}.previewPanel .stats .stat{min-height:58px}.previewPanel .stats .stat b{font-size:clamp(16px,1.35vw,20px)}
+@media(max-width:820px){.stats{grid-template-columns:1fr}.statGroup{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.liveActionBar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;padding:10px;border:1px solid #4d3840;border-radius:11px;background:#1a151c}.liveActionBar button{min-height:48px;font-size:11px;letter-spacing:.5px;font-weight:800}.liveActionBar .blackoutAction{background:#3a2029;border-color:#9b5362;color:#ffc4c9}.liveActionBar .blackoutAction.active{background:#8d3046;color:#fff;border-color:#ff91a5;box-shadow:0 0 16px #d8516840}.liveActionBar .flashAction{background:#49351c;border-color:#b18449;color:#ffe3aa}.liveActionBar .flashAction:active,.liveActionBar .flashAction.active{background:#bd7e27;color:#fff3d2;box-shadow:0 0 16px #d79c4540}
+.shortcutHint{max-width:1880px;margin:-5px auto 0;padding:0 22px 10px;color:#7896a1;font-size:10px;letter-spacing:.3px}.shortcutHint kbd{display:inline-block;margin:0 3px;padding:2px 6px;border:1px solid #38535d;border-bottom-width:2px;border-radius:5px;background:#132731;color:#c9e2e3;font:700 10px monospace}.shortcutHint .hintLabel{color:#5fd9b5;font-weight:800;letter-spacing:1px;margin-right:5px}@media(max-width:820px){.shortcutHint{padding:0 10px 8px;line-height:2}}
+.quickScenes{display:none;max-width:1880px;margin:0 auto;padding:0 22px 12px;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}.quickScenes button{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:8px 7px;border-color:#294854;background:#10232d;color:#b4ced2;font-size:10px;font-weight:750}.quickScenes button::first-letter{color:#6be8c1}.quickScenes button.active{background:#1b554c;border-color:#69e8c5;color:#f3fffb;box-shadow:inset 0 0 0 1px #3f9d83}.quickScenes button.store{border-color:#d29b52;background:#3a2b1b;color:#ffe1a9}@media(max-width:820px){.quickScenes{padding:0 10px 10px;grid-template-columns:repeat(4,minmax(0,1fr))}.quickScenes button{font-size:9px;padding:8px 4px}}
+body.focusMode .workspaceNav,body.focusMode .workspaceIntro,body.focusMode .quickStatus,body.focusMode .shortcutHint{display:none}body.focusMode main{display:block;max-width:none;padding:14px;height:calc(100vh - 67px)}body.focusMode main .workPanel:not(.previewPanel){display:none!important}body.focusMode .previewPanel{height:100%;min-height:0;margin:0;border-color:#3d9e8c}.focusMode .previewPanel .canvasWrap{min-height:0;height:calc(100% - 205px)}.focusMode .previewPanel .stats{max-width:900px;margin:0 auto}.focusMode #focusMode{background:#236f61;border-color:#70eacc;color:#f4fffb}
 main{display:grid;grid-template-columns:minmax(270px,310px) minmax(375px,1fr) minmax(270px,310px);gap:16px;padding:12px 22px 28px;max-width:1880px;margin:auto;min-height:0;align-items:start}
 .workPanel[hidden]{display:none!important}.workPanel{padding:20px;background:linear-gradient(160deg,#132530,#101d27 70%);border:1px solid #2a4350;box-shadow:0 12px 35px #0002;border-radius:14px}
 .panel h2{font-size:12px;color:#7ce7d1;letter-spacing:1.35px;margin:3px 0 17px}.workPanel .field{margin:16px 0}.workPanel .field label{font-size:12px}.workPanel input[type=range]{accent-color:#62e9c3}
@@ -26,7 +33,7 @@ main{display:grid;grid-template-columns:minmax(270px,310px) minmax(375px,1fr) mi
 .workPanel .safe{background:#2f232b;border:1px solid #6a414e;border-left:3px solid #db7884}.workPanel .warn{background:#302b20;border:1px solid #745d35;border-left:3px solid #ddb465}
 .mixerPanel{grid-column:1;grid-row:1}.previewPanel{grid-column:2;grid-row:1;position:relative;top:auto;height:min(740px,calc(100vh - 195px));min-height:530px}.liveControlsPanel{grid-column:3;grid-row:1}
 .bank{grid-column:1/-1;grid-row:2}.previewPanel .canvasWrap{min-height:300px;background:radial-gradient(ellipse at center,#061b18,#020707 78%);border-color:#2f675c;box-shadow:inset 0 0 50px #000a}.previewHeading{display:flex;justify-content:space-between;align-items:center;gap:10px}.previewHeading h2{margin:4px 0 7px}.previewLive{color:#73dbc0;font:10px monospace;white-space:nowrap}.previewLive i{display:inline-block;width:6px;height:6px;background:#60e6ba;border-radius:99px;margin-right:6px;box-shadow:0 0 8px #62e9c3}
-.previewPanel .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.previewPanel .stat{padding:10px;background:#152d38;border:1px solid #233e49}.previewPanel .stat b{font-size:20px;margin-top:6px}.previewPanel .stat small{font-size:9px}
+.previewPanel .stats{grid-template-columns:1fr;gap:7px}.previewPanel .stat{padding:10px;background:#152d38;border:1px solid #233e49}.previewPanel .stat b{font-size:20px;margin-top:6px}.previewPanel .stat small{font-size:9px}
 .bankGrid{gap:10px}.slot{min-height:96px;background:#172f3a}.slot.playing{background:#19554c;border-color:#65edc9}.bankLayout{grid-template-columns:minmax(0,1fr) 300px}
 main[data-workspace=design] .vectorEditor{grid-column:1;grid-row:1}main[data-workspace=design] .previewPanel{grid-column:2;grid-row:1}main[data-workspace=design] .mixerPanel{grid-column:3;grid-row:1}main[data-workspace=design] .maskPanel{grid-column:1/-1;grid-row:2}main[data-workspace=design] .studio{grid-column:1/-1;grid-row:3}
 main[data-workspace=show] .previewPanel{grid-column:1/3;grid-row:1;height:440px;min-height:440px;position:relative;top:auto}main[data-workspace=show] .liveControlsPanel{grid-column:3;grid-row:1}main[data-workspace=show] .bank{grid-column:1/-1;grid-row:2}main[data-workspace=show] .sequencer{grid-column:1/-1;grid-row:3}main[data-workspace=show] .studio{grid-column:1/-1;grid-row:4}
@@ -35,7 +42,7 @@ main[data-workspace=settings] .plannerPanel{grid-column:1;grid-row:1}main[data-w
 .vectorEditor .editor{height:285px}.vectorPathList{max-height:180px}.vectorEditor button{font-size:11px}.maskLayout{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}.studioGrid{grid-template-columns:minmax(210px,260px) minmax(0,1fr) minmax(220px,290px)}
 @media(max-width:1250px){main{grid-template-columns:minmax(250px,310px) minmax(0,1fr)}main .previewPanel{grid-column:2;grid-row:1;min-height:500px;height:650px}main .mixerPanel,main[data-workspace=design] .vectorEditor,main[data-workspace=settings] .plannerPanel{grid-column:1;grid-row:1}main .liveControlsPanel,main[data-workspace=design] .mixerPanel{grid-column:1;grid-row:2}main .bank,main .maskPanel,main .studio,main .sequencer,main .videoInput,main .midi{grid-column:1/-1;grid-row:auto}main[data-workspace=show] .previewPanel,main[data-workspace=inputs] .previewPanel,main[data-workspace=settings] .previewPanel{grid-column:2;grid-row:1}main[data-workspace=show] .liveControlsPanel{grid-column:1;grid-row:1}main[data-workspace=design] .mixerPanel{grid-column:1;grid-row:2}main[data-workspace=design] .previewPanel{grid-column:2;grid-row:1}main[data-workspace=live] .bank{grid-row:3}main[data-workspace=design] .maskPanel{grid-row:3}main[data-workspace=design] .studio{grid-row:4}}
 @media(max-width:820px){header{padding:12px}.logo{font-size:17px}.workspaceNav{gap:3px;padding:8px;grid-template-columns:repeat(5,minmax(0,1fr))}.workspaceNav button{flex-direction:column;gap:3px;padding:10px 3px;font-size:10px}.workspaceNav button small{display:none}.workspaceNav button .navIcon{font-size:18px}.workspaceIntro{padding:16px 12px 5px}.viewSafety{display:none}main{display:flex;flex-direction:column;padding:10px;gap:12px}main .workPanel{width:100%;grid-row:auto;grid-column:auto}main .previewPanel{order:-1;position:static!important;top:auto!important;height:460px!important;min-height:460px!important}main .previewPanel .canvasWrap{min-height:230px}.workPanel{padding:15px}.studioGrid,.maskLayout,.videoLayout,.bankLayout,.midiLayout{display:grid;grid-template-columns:1fr}.studioRight,.videoHelp{grid-column:auto}.bankGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:460px){.workspaceIntro h1{font-size:19px}.previewPanel .stats{grid-template-columns:repeat(2,minmax(0,1fr))}main .previewPanel{height:570px!important;min-height:570px!important}.toolbar .pill{display:none}.toolbar button{padding:8px}.logo span{display:none}}
+@media(max-width:460px){.workspaceIntro h1{font-size:19px}.previewPanel .stats{grid-template-columns:1fr}.statGroup{padding:6px}.previewPanel .stat{padding:8px}main .previewPanel{height:570px!important;min-height:570px!important}.toolbar .pill{display:none}.toolbar button{padding:8px}.logo span{display:none}}
 /* Workspace polish: preserve every control and its existing behavior. */
 body{font-size:13px;line-height:1.5}
 .workPanel{overflow-wrap:anywhere}
@@ -92,7 +99,7 @@ main[data-workspace=design] .studio{grid-column:1/-1;grid-row:4}
  .seqControls{grid-template-columns:1fr 1fr}
 }
 </style></head><body>
-<header><div class="logo"><span class="brandMark">◈</span> LASER DJ LIVE <span> / STUDIO 1.2.5</span></div><div class="toolbar"><span class="pill" id="runtimeStatus">DESKTOP / STARTING</span><span class="tag">VIRTUÁLNÍ REŽIM · BEZ ILDA</span><button id="saveScene">ULOŽIT SCÉNU</button><button id="openScene">NAČÍST SCÉNU</button><input id="sceneFile" type="file" accept=".json,application/json" hidden><button id="run" class="primary">PAUSE</button></div></header>
+<header><div class="logo"><span class="brandMark">◈</span> LASER DJ LIVE <span> / STUDIO 1.2.5</span></div><div class="toolbar"><span class="pill" id="runtimeStatus">DESKTOP / STARTING</span><span class="tag">VIRTUÁLNÍ REŽIM · BEZ ILDA</span><button id="saveScene">ULOŽIT SCÉNU</button><button id="openScene">NAČÍST SCÉNU</button><input id="sceneFile" type="file" accept=".json,application/json" hidden><button id="focusMode">FOCUS PREVIEW</button><button id="run" class="primary">PAUSE</button></div></header>
 <nav class="workspaceNav" role="tablist" aria-label="Pracovní režimy">
 <button data-workspace-tab="live" class="active" role="tab" aria-selected="true"><span class="navIcon">◉</span><span>LIVE</span><small>Živé ovládání</small></button>
 <button data-workspace-tab="design" role="tab" aria-selected="false"><span class="navIcon">◇</span><span>EDITOR</span><small>Tvary a masky</small></button>
@@ -101,20 +108,28 @@ main[data-workspace=design] .studio{grid-column:1/-1;grid-row:4}
 <button data-workspace-tab="settings" role="tab" aria-selected="false"><span class="navIcon">⚙</span><span>NASTAVENÍ</span><small>Planner a bezpečnost</small></button>
 </nav>
 <div class="workspaceIntro"><div><span class="eyebrow">LASER DJ LIVE / WORKSPACE</span><h1 id="workspaceTitle">LIVE PERFORMANCE</h1><p id="workspaceDescription">Vrstvy, tempo a scény na jedné obrazovce.</p></div><span class="viewSafety">● HARDWARE OUTPUT OFF</span></div>
+<div class="quickStatus" aria-label="Rychlý stav projektu">
+<div class="quickStatusItem live"><span>Aktivní vrstva</span><strong id="quickLayer">VRSTVA 1</strong></div>
+<div class="quickStatusItem live"><span>Tempo</span><strong id="quickBpm">138 BPM</strong></div>
+<div class="quickStatusItem" id="quickPreviewStatus"><span>Náhled</span><strong id="quickFps">BĚŽÍ · 0 FPS</strong></div>
+<div class="quickStatusItem alert"><span>Scéna</span><strong id="quickScene">ŽÁDNÁ</strong></div>
+</div>
+<div class="shortcutHint"><span class="hintLabel">ZKRATKY</span><kbd>1–8</kbd> scény <kbd>SPACE</kbd> pauza / pokračovat <kbd>ESC</kbd> zrušit STORE MODE</div>
+<div id="quickScenes" class="quickScenes" aria-label="Rychlé spuštění scén"></div>
 <main id="workspaceMain" data-workspace="live">
-<section id="mixerPanel" class="panel workPanel mixerPanel"><h2>01 / VRSTVY</h2><div class="tabs"><button data-layer="0" class="active">LAYER 1</button><button data-layer="1">LAYER 2</button></div>
+<section id="mixerPanel" class="panel workPanel mixerPanel"><h2>01 / VRSTVY</h2><div class="tabs"><button data-layer="0" class="active">VRSTVA 1</button><button data-layer="1">VRSTVA 2</button></div>
 <div class="controlSection"><h3>ZDROJ A BARVA</h3>
 <div class="field"><label>Vrstva zapnuta <input id="enabled" type="checkbox" checked></label></div>
-<div class="field"><label>Animation</label><select id="effect"><option value="tunnel">Psy Tunnel</option><option value="circles">Rotating Circles</option><option value="spiral">Hypno Spiral</option><option value="fan">Laser Fan</option><option value="grid">Geometry Grid</option><option value="custom">Custom Shape</option><option value="video">Video → Vector (Live)</option></select></div>
-<div class="field"><label>Color</label><input id="color" type="color" value="#3effc6"></div>
+<div class="field"><label>Animace</label><select id="effect"><option value="tunnel">Psy Tunnel</option><option value="circles">Rotující kruhy</option><option value="spiral">Hypno spirála</option><option value="fan">Laserový vějíř</option><option value="grid">Geometrická mřížka</option><option value="custom">Vlastní tvar</option><option value="video">Video → vektor (live)</option></select></div>
+<div class="field"><label>Barva</label><input id="color" type="color" value="#3effc6"></div>
 </div><div class="controlSection"><h3>POHYB A VZHLED</h3>
-<div class="field"><label>Speed <span class="num" id="speedV"></span></label><input id="speed" type="range" min="-3" max="3" step=".05" value="1"></div>
-<div class="field"><label>Scale <span class="num" id="scaleV"></span></label><input id="scale" type="range" min=".1" max="1" step=".01" value=".65"></div>
-<div class="field"><label>Rotation <span class="num" id="rotationV"></span></label><input id="rotation" type="range" min="-720" max="720" step="1" value="0"></div>
-<div class="field"><label>Brightness <span class="num" id="brightnessV"></span></label><input id="brightness" type="range" min="0" max="100" step="1" value="75"></div>
+<div class="field"><label>Rychlost <span class="num" id="speedV"></span></label><input id="speed" type="range" min="-3" max="3" step=".05" value="1"></div>
+<div class="field"><label>Velikost <span class="num" id="scaleV"></span></label><input id="scale" type="range" min=".1" max="1" step=".01" value=".65"></div>
+<div class="field"><label>Rotace <span class="num" id="rotationV"></span></label><input id="rotation" type="range" min="-720" max="720" step="1" value="0"></div>
+<div class="field"><label>Jas <span class="num" id="brightnessV"></span></label><input id="brightness" type="range" min="0" max="100" step="1" value="75"></div>
 </div><div class="controlSection"><h3>POZICE PROJEKCE</h3>
-<div class="field"><label>Position X <span class="num" id="xV"></span></label><input id="x" type="range" min="-1" max="1" step=".01" value="0"></div>
-<div class="field"><label>Position Y <span class="num" id="yV"></span></label><input id="y" type="range" min="-1" max="1" step=".01" value="0"></div>
+<div class="field"><label>Pozice X <span class="num" id="xV"></span></label><input id="x" type="range" min="-1" max="1" step=".01" value="0"></div>
+<div class="field"><label>Pozice Y <span class="num" id="yV"></span></label><input id="y" type="range" min="-1" max="1" step=".01" value="0"></div>
 </div>
 </section>
 <section id="vectorEditorPanel" class="panel workPanel vectorEditor"><h2>02 / TVORBA VEKTORŮ</h2><p class="muted">Jedna animace může obsahovat až 16 samostatných cest. Každá cesta má svou barvu a zapnutí. Vykreslování může změnit automatická optimalizace pořadí cest.</p>
@@ -129,8 +144,8 @@ main[data-workspace=design] .studio{grid-column:1/-1;grid-row:4}
 <div class="tools vectorTemplates"><button data-vector-preset="star">★ STAR</button><button data-vector-preset="hexagon">⬡ HEXAGON</button><button data-vector-preset="wave">∿ WAVE</button></div>
 <p class="vectorHint">Kliknutím na cestu ji vybereš pro editaci. Nová cesta nezačne kreslit další čáru od konce předchozí. MOVE: táhni bod. INSERT: klikni na úsečku. DELETE: klikni na bod. Undo / Redo se uchovává zvlášť pro obě vrstvy.</p><p class="muted" id="editorInfo">Body: 0</p>
 </section>
-<section id="previewPanel" class="panel stack workPanel previewPanel"><div class="previewHeading"><div><span class="eyebrow">VIRTUAL SCANNER</span><h2>03 / NÁHLED PROJEKCE</h2></div><span class="previewLive"><i></i> SIMULATION</span></div><div class="canvasWrap"><canvas id="preview"></canvas><div class="watermark">DESKTOP VECTOR ENGINE 1.2.5 · NO ILDA OUTPUT</div></div><div class="stats"><div class="stat"><small>PREVIEW FPS</small><b id="fps">0</b></div><div class="stat"><small>ALL POINTS</small><b id="points">0</b></div><div class="stat"><small>REQUIRED K PPS</small><b id="kpps">0.0</b></div><div class="stat"><small>PATHS</small><b id="paths">0</b></div><div class="stat"><small>LIT POINTS</small><b id="lit">0</b></div><div class="stat"><small>BLANK POINTS</small><b id="blank">0</b></div><div class="stat"><small>FRAME DURATION</small><b id="duration">0 ms</b></div><div class="stat"><small>PATH TRAVEL</small><b id="travel">0</b></div></div><div id="budgetWarning" class="warn hide">⚠ Bodový rozpočet pro zadané kpps a FPS je překročen. Tento náhled není fyzicky ověřený na skenerech.</div><p id="budgetStatus" class="status">Frame reduction: inactive</p></section>
-<section id="liveControlsPanel" class="panel workPanel liveControlsPanel"><h2>04 / LIVE OVLÁDÁNÍ</h2><div class="controlSection"><h3>TEMPO</h3><div class="field"><label>BPM <span class="num" id="bpmV">138</span></label><input id="bpm" type="range" min="60" max="200" value="138"></div><div class="pair"><button id="tap">TAP</button><button id="beatReset">BEAT RESET</button></div></div><div class="controlSection"><h3>HLAVNÍ MIX</h3><div class="field"><label>Master intensity <span class="num" id="masterV">100%</span></label><input id="master" type="range" min="0" max="100" value="100"></div><div class="field"><label>Layer Crossfader <span class="num" id="crossfadeV">L1 50% / L2 50%</span></label><input id="crossfade" type="range" min="0" max="100" value="50"></div></div></section>
+<section id="previewPanel" class="panel stack workPanel previewPanel"><div class="previewHeading"><div><span class="eyebrow">VIRTUAL SCANNER</span><h2>03 / NÁHLED PROJEKCE</h2></div><span class="previewLive"><i></i> SIMULATION</span></div><div class="canvasWrap"><canvas id="preview"></canvas><div class="watermark">DESKTOP VECTOR ENGINE 1.2.5 · NO ILDA OUTPUT</div></div><div class="stats"><div class="statGroup performance"><div class="stat"><small>PREVIEW FPS</small><b id="fps">0</b></div><div class="stat"><small>ALL POINTS</small><b id="points">0</b></div><div class="stat"><small>REQUIRED K PPS</small><b id="kpps">0.0</b></div><div class="stat"><small>PATHS</small><b id="paths">0</b></div></div><div class="statGroup diagnostics"><div class="stat"><small>LIT POINTS</small><b id="lit">0</b></div><div class="stat"><small>BLANK POINTS</small><b id="blank">0</b></div><div class="stat"><small>FRAME DURATION</small><b id="duration">0 ms</b></div><div class="stat"><small>PATH TRAVEL</small><b id="travel">0</b></div></div></div><div id="budgetWarning" class="warn hide">⚠ Bodový rozpočet pro zadané kpps a FPS je překročen. Tento náhled není fyzicky ověřený na skenerech.</div><p id="budgetStatus" class="status">Frame reduction: inactive</p></section>
+<section id="liveControlsPanel" class="panel workPanel liveControlsPanel"><h2>04 / LIVE OVLÁDÁNÍ</h2><div class="controlSection"><h3>TEMPO</h3><div class="field"><label>BPM <span class="num" id="bpmV">138</span></label><input id="bpm" type="range" min="60" max="200" value="138"></div><div class="pair"><button id="tap">TAP</button><button id="beatReset">RESET DOBY</button></div></div><div class="controlSection"><h3>HLAVNÍ MIX</h3><div class="field"><label>Intenzita masteru <span class="num" id="masterV">100%</span></label><input id="master" type="range" min="0" max="100" value="100"></div><div class="field"><label>Crossfader vrstev <span class="num" id="crossfadeV">L1 50% / L2 50%</span></label><input id="crossfade" type="range" min="0" max="100" value="50"></div></div><div class="liveActionBar" aria-label="Rychlé live akce"><button id="quickBlackout" class="blackoutAction">BLACKOUT: OFF</button><button id="quickFlash" class="flashAction">FLASH · DRŽET</button></div></section>
 <section id="plannerPanel" class="panel workPanel plannerPanel"><h2>05 / NASTAVENÍ NÁHLEDU</h2><div class="field"><label>Preview masking</label><select id="mask"><option value="none">No preview mask</option><option value="bottom">Bottom 35% blocked</option><option value="left">Left 25% blocked</option><option value="right">Right 25% blocked</option></select></div><div class="field"><label>Preview options</label><label><input id="showPoints" type="checkbox"> Show sampled points</label><label><input id="showGrid" type="checkbox" checked> Show grid</label><label><input id="showTravel" type="checkbox"> Show blank travel</label></div><div class="hr"></div><h2>06 / OPTIMALIZACE CEST</h2><div class="field"><label><span>Nearest-path ordering</span><input id="optimize" type="checkbox" checked></label></div><div class="field"><label>Point spacing <span class="num" id="spacingV"></span></label><input id="spacing" type="range" min=".012" max=".080" step=".002" value=".03"></div><div class="field"><label>Corner dwell <span class="num" id="dwellV"></span></label><input id="dwell" type="range" min="0" max="6" step="1" value="2"></div><div class="field"><label>Scan rate <span class="num" id="scanRateV"></span></label><input id="scanRate" type="range" min="10000" max="40000" step="1000" value="30000"></div><div class="field"><label>Target frame rate <span class="num" id="targetFpsV"></span></label><input id="targetFps" type="range" min="15" max="60" step="1" value="30"></div><button id="exportFrame" class="full">EXPORT PLANNED POINTS (JSON)</button><div class="hr"></div><h2>07 / HARDWARE DIAGNOSTICS</h2><p class="status">USB: <strong>NOT CONNECTED</strong></p><p class="status">Teensy firmware: <strong>NOT IMPLEMENTED</strong></p><p class="status">DAC / ILDA: <strong>NOT CONNECTED</strong></p><p class="status" id="budgetText">Point budget: 1000</p><div class="safe">⚠ Jde výhradně o virtuální editor. Masky nejsou bezpečnostní ochranou. Tento program nemá USB, DAC ani ILDA výstup a nedokáže řídit skutečný laser.</div></section>
 <section id="maskPanel" class="panel maskPanel workPanel"><div class="trackTitle"><h2>08 / Custom virtual blackout zones</h2><span class="tag">NOT LASER SAFETY</span></div>
 <div class="maskLayout"><div><canvas id="maskCanvas" class="maskCanvas" width="480" height="240"></canvas><p class="maskHelp">Tažením myši vyznač obdélník, který se v náhledu nevykreslí. Můžeš přidat až 16 zón. Souřadnice jsou relativní k projekční ploše a ukládají se do scény.</p></div>
@@ -174,6 +189,7 @@ function setWorkspaceView(view){
   const changed=workspaceView!==view;
   workspaceView=view;
   const main=$('workspaceMain');main.setAttribute?.('data-workspace',view);
+  if(document.body?.dataset)document.body.dataset.workspace=view;
   for(const id of ['mixerPanel','vectorEditorPanel','previewPanel','liveControlsPanel','plannerPanel','maskPanel','studioPanel','bankPanel','sequencerPanel','midiPanel','videoPanel'])$(id).hidden=!config.panels.includes(id);
   $('workspaceTitle').textContent=config.title;$('workspaceDescription').textContent=config.description;
   document.querySelectorAll('[data-workspace-tab]').forEach(button=>{
@@ -184,6 +200,13 @@ function setWorkspaceView(view){
   requestAnimationFrame(()=>{if(view==='design')drawEditor();if(view==='design'||view==='settings')drawMaskEditor()});
 }
 document.querySelectorAll('[data-workspace-tab]').forEach(button=>button.addEventListener('click',()=>setWorkspaceView(button.dataset.workspaceTab)));
+function setFocusMode(enabled){
+  document.body.classList.toggle('focusMode',enabled);
+  $('focusMode').textContent=enabled?'EXIT FOCUS':'FOCUS PREVIEW';
+  $('focusMode').setAttribute('aria-pressed',String(enabled));
+  requestAnimationFrame(()=>{fitCanvas(preview,ctx);drawMaskEditor()});
+}
+$('focusMode').onclick=()=>setFocusMode(!document.body.classList.contains('focusMode'));
 const MaskZones=window.LaserMaskZones;
 const VectorEdit=window.LaserVectorEdit;
 const VectorPaths=window.LaserVectorPaths;
@@ -201,6 +224,14 @@ let inputPaths=[],videoStream=null,videoURL=null,videoMode='none',lastVideoFrame
 let vectorWorker=null,vectorWorkerBusy=false,videoGeneration=0,previousBinaryMain=null;
 let spoutPending=null;
 $('runtimeStatus').textContent=window.laserDesktop?.desktop?'WINDOWS DESKTOP 1.2.5':'BROWSER PREVIEW 1.2.5';
+function updateQuickStatus(){
+  const layer=$('quickLayer'),bpm=$('quickBpm'),previewFps=$('quickFps'),scene=$('quickScene'),previewStatus=$('quickPreviewStatus');
+  if(layer)layer.textContent='VRSTVA '+(state.selected+1);
+  if(bpm)bpm.textContent=state.bpm+' BPM';
+  if(previewFps)previewFps.textContent=(state.run?'BĚŽÍ · ':'PAUZA · ')+Math.round(fps)+' FPS';
+  if(previewStatus)previewStatus.classList.toggle('paused',!state.run);
+  if(scene)scene.textContent=activeSlot>=0&&bank[activeSlot]?bank[activeSlot].name:'ŽÁDNÁ';
+}
 function selected(){return state.layers[state.selected]}
 function bindControls(){vectorDrag=null;const l=selected();ensureVectorPaths(l);for(const key of ['effect','color','speed','scale','rotation','brightness','x','y'])$(key).value=l[key];$('enabled').checked=l.enabled;for(const key of ['speed','scale','rotation','brightness','x','y'])$(key+'V').textContent=key==='brightness'?l[key]+'%':key==='rotation'?l[key]+'°':Number(l[key]).toFixed(2);document.querySelectorAll('[data-layer]').forEach(b=>b.classList.toggle('active',+b.dataset.layer===state.selected));$('timelineEnabled').checked=!!l.timelineEnabled;$('studioLayerName').textContent='LAYER '+(state.selected+1);renderVectorPathList();drawEditor();drawKeyframes()}
 document.querySelectorAll('[data-layer]').forEach(b=>b.addEventListener('click',()=>{state.selected=+b.dataset.layer;bindControls()}));
@@ -806,12 +837,13 @@ $('timelineValue').textContent=(timelinePhase(time)*state.durationBeats).toFixed
 $('fps').textContent=Math.round(fps);$('points').textContent=n;$('kpps').textContent=(n*state.targetFps/1000).toFixed(1);
 $('paths').textContent=pathsCount;$('lit').textContent=lit;$('blank').textContent=blank;
 $('duration').textContent=(n/state.scanRate*1000).toFixed(1)+' ms';$('travel').textContent=travelDistance.toFixed(2);
+updateQuickStatus();
 $('budgetText').textContent='Point budget: '+budget+' points / frame ('+state.targetFps+' FPS @ '+state.scanRate/1000+' kpps)';
 $('budgetWarning').classList.toggle('hide',n<=budget&&n<16000);
 $('budgetStatus').textContent=frameDiagnostics.reduced?'Frame reduced: '+frameDiagnostics.originalPoints+' → '+n+' points (budget '+budget+')':'Frame reduction: inactive'+(n>budget?' — '+frameDiagnostics.mandatoryPoints+' essential points exceed budget':'');
 }
 requestAnimationFrame(paint);
-$('run').onclick=()=>{state.run=!state.run;$('run').textContent=state.run?'PAUSE':'RESUME'};$('bpm').oninput=()=>{state.bpm=+$('bpm').value;$('bpmV').textContent=state.bpm};$('master').oninput=()=>{state.master=+$('master').value;$('masterV').textContent=state.master+'%'};$('mask').onchange=()=>state.mask=$('mask').value;$('showPoints').onchange=()=>state.showPoints=$('showPoints').checked;$('showGrid').onchange=()=>state.showGrid=$('showGrid').checked;
+$('run').onclick=()=>{state.run=!state.run;$('run').textContent=state.run?'PAUSE':'RESUME';updateQuickStatus()};$('bpm').oninput=()=>{state.bpm=+$('bpm').value;$('bpmV').textContent=state.bpm;updateQuickStatus()};$('master').oninput=()=>{state.master=+$('master').value;$('masterV').textContent=state.master+'%'};$('mask').onchange=()=>state.mask=$('mask').value;$('showPoints').onchange=()=>state.showPoints=$('showPoints').checked;$('showGrid').onchange=()=>state.showGrid=$('showGrid').checked;
 $('crossfade').oninput=()=>{state.crossfade=Number($('crossfade').value)/100;showCrossfade()};
 function showCrossfade(){$('crossfadeV').textContent='L1 '+Math.round((1-state.crossfade)*100)+'% / L2 '+Math.round(state.crossfade*100)+'%'}
 $('transitionBeats').onchange=()=>state.transitionBeats=Number($('transitionBeats').value);
@@ -903,7 +935,7 @@ state.blackout=false;state.flash=false;transition=null;
 state.sequence=normalizeSequence(d.sequence);
 seqStartBeat=beatClock;seqStepAbs=-1;seqBlackoutActive=false;seqFlashUntil=-1;
 $('seqStepBeats').value=state.sequence.stepBeats;renderSequencer();
-$('blackout').textContent='BLACKOUT: OFF';$('blackout').classList.toggle('primary',false);
+syncBlackoutUi();
 $('crossfade').value=Math.round(state.crossfade*100);showCrossfade();
 $('transitionBeats').value=state.transitionBeats;
 $('timelinePlay').checked=state.timelinePlay;$('durationBeats').value=state.durationBeats;
@@ -973,6 +1005,17 @@ const detail=document.createElement('span');detail.className='detail';
 detail.textContent=slot.scene.layers.filter(l=>l.enabled).map(l=>l.effect.toUpperCase()).join(' + ');
 b.append(n,title,detail);b.onclick=()=>triggerSlot(index);root.append(b);
 });
+renderQuickScenes();
+}
+function renderQuickScenes(){
+const root=$('quickScenes');if(!root||!Array.isArray(bank))return;root.replaceChildren();
+bank.forEach((slot,index)=>{
+const b=document.createElement('button');
+b.className=(activeSlot===index?'active ':'')+(storeArmed?'store':'');
+b.textContent=(index+1)+' · '+slot.name;
+b.title='Spustit scénu '+(index+1)+': '+slot.name;
+b.onclick=()=>triggerSlot(index);root.append(b);
+});
 }
 function triggerSlot(index,fromSequence=false){
 const slot=bank[index];if(!slot)return;
@@ -1006,15 +1049,26 @@ $('resetBank').onclick=()=>{
 if(!window.confirm('Replace the current 8 scene slots with built-in presets? Export your bank first if needed.'))return;
 bank=builtInBank();activeSlot=-1;transition=null;persistBank();renderBank();
 };
-$('blackout').onclick=()=>{state.blackout=!state.blackout;$('blackout').textContent='BLACKOUT: '+(state.blackout?'ON':'OFF');$('blackout').classList.toggle('primary',state.blackout)};
+$('blackout').onclick=()=>{state.blackout=!state.blackout;syncBlackoutUi()};
 $('flash').onpointerdown=()=>state.flash=true;
 $('flash').onpointerup=()=>state.flash=false;
 $('flash').onpointercancel=()=>state.flash=false;
-window.addEventListener('pointerup',()=>state.flash=false);
-window.addEventListener('blur',()=>state.flash=false);
+function syncBlackoutUi(){
+  const label='BLACKOUT: '+(state.blackout?'ON':'OFF');
+  $('blackout').textContent=label;$('blackout').classList.toggle('primary',state.blackout);
+  $('quickBlackout').textContent=label;$('quickBlackout').classList.toggle('active',state.blackout);
+}
+$('quickBlackout').onclick=()=>$('blackout').click();
+$('quickFlash').onpointerdown=()=>{$('quickFlash').classList.add('active');state.flash=true};
+$('quickFlash').onpointerup=()=>{$('quickFlash').classList.remove('active');state.flash=false};
+$('quickFlash').onpointercancel=()=>{$('quickFlash').classList.remove('active');state.flash=false};
+window.addEventListener('pointerup',()=>{state.flash=false;$('quickFlash').classList.remove('active')});
+window.addEventListener('blur',()=>{state.flash=false;$('quickFlash').classList.remove('active')});
 window.addEventListener('keydown',e=>{
 if(e.altKey||e.ctrlKey||e.metaKey||['INPUT','SELECT','TEXTAREA'].includes(e.target?.tagName))return;
+if(e.code==='Space'&&!e.repeat){e.preventDefault();state.run=!state.run;$('run').textContent=state.run?'PAUSE':'RESUME';updateQuickStatus();return}
 if(/^[1-8]$/.test(e.key))triggerSlot(Number(e.key)-1);
+if(e.key==='Escape'&&document.body.classList.contains('focusMode')){setFocusMode(false);return}
 if(e.key==='Escape'&&storeArmed){storeArmed=false;$('storeMode').textContent='STORE MODE: OFF';renderBank()}
 });
 function normalizeSequence(input){
